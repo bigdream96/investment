@@ -44,37 +44,6 @@ class InvestmentTest {
     }
 
     @Test
-    @DisplayName("모든 상품투자 조회")
-    void findAll() {
-        List<Investment> investmentList = new ArrayList<>();
-        Product product = Product.builder()
-                .title("You can be elon musk")
-                .totalInvestingAmount(10000L)
-                .startedAt(LocalDate.now())
-                .finishedAt(LocalDate.now())
-                .build();
-        Investment investment1 = Investment.builder()
-                .product(product)
-                .status(INVESTED)
-                .investedAmount(5000L)
-                .investedAt(LocalDate.now())
-                .build();
-        Investment investment2 = Investment.builder()
-                .product(product)
-                .status(INVESTED)
-                .investedAmount(5000L)
-                .investedAt(LocalDate.now())
-                .build();
-        investmentList.add(investment1);
-        investmentList.add(investment2);
-
-        investmentRepository.saveAll(investmentList);
-        List<Investment> findInvestmentList = investmentRepository.findAll();
-
-        assertEquals(investmentList, findInvestmentList);
-    }
-
-    @Test
     @DisplayName("상품ID로 상품투자 조회")
     void findByProductId() {
         List<Investment> investmentList = new ArrayList<>();

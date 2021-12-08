@@ -14,6 +14,7 @@ CREATE TABLE products
 CREATE TABLE investments
 (
     id                     bigint auto_increment primary key,   --id
+    user_id                bigint,
     products_id            bigint,                              --상품id
     invested_amount        bigint,                              --투자금액
     status                 varchar(20)  not null,               --투자상태

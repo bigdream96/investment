@@ -18,7 +18,7 @@ public class Investment {
     @GeneratedValue
     private Long id;
 
-    private String userName;
+    private Long userId;
 
     private Long investedAmount;
 
