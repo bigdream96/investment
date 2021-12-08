@@ -2,7 +2,6 @@ package com.fastcampus.investment.dto;
 
 import com.fastcampus.investment.domain.Product;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
 import java.time.LocalDate;

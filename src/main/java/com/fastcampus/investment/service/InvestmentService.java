@@ -6,11 +6,10 @@ import com.fastcampus.investment.domain.Product;
 import com.fastcampus.investment.dto.InvestmentResponse;
 import com.fastcampus.investment.repository.InvestmentRepository;
 import com.fastcampus.investment.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
@@ -18,20 +17,14 @@ import java.util.Optional;
 import static com.fastcampus.investment.constants.InvestmentStatus.FAIL;
 import static com.fastcampus.investment.constants.InvestmentStatus.INVESTED;
 import static com.fastcampus.investment.dto.InvestmentResponse.*;
-import static com.fastcampus.investment.dto.InvestmentResponse.emptyResponseList;
 import static com.fastcampus.investment.service.ProductService.getEmptyProduct;
 
 @Service
+@RequiredArgsConstructor
 public class InvestmentService {
 
     private final ProductRepository productRepository;
     private final InvestmentRepository investmentRepository;
-
-    @Autowired
-    public InvestmentService(ProductRepository productRepository, InvestmentRepository investmentRepository) {
-        this.productRepository = productRepository;
-        this.investmentRepository = investmentRepository;
-    }
 
     public List<InvestmentResponse> searchInvestment(Long userId) {
         Optional<List<Investment>> findInvestment = investmentRepository.findByUserId(userId);
@@ -39,7 +32,7 @@ public class InvestmentService {
         return findInvestment.map(InvestmentResponse::entityToResponseList).orElseGet(InvestmentResponse::emptyResponseList);
     }
 
-    public List<InvestmentResponse> updateInvestmentStatus(Long userId, Long productId, InvestmentStatus status) {
+    public List<InvestmentResponse> updateInvestment(Long userId, Long productId, InvestmentStatus status) {
         Optional<List<Investment>> findInvestment = investmentRepository.findByUserId(userId);
 
         if(findInvestment.isPresent()) {
@@ -47,9 +40,7 @@ public class InvestmentService {
             for(Investment investment : investments) {
                 if(Objects.equals(investment.getProduct().getId(), productId) && investment.getStatus() == INVESTED) {
                     investment.changeStatus(status);
-
                     investmentRepository.save(investment);
-
                     return entityToResponseList(List.of(investment));
                 }
             }

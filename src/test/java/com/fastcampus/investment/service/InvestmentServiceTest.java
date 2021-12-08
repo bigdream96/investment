@@ -1,6 +1,5 @@
 package com.fastcampus.investment.service;
 
-import com.fastcampus.investment.constants.InvestmentStatus;
 import com.fastcampus.investment.domain.Product;
 import com.fastcampus.investment.dto.InvestmentResponse;
 import com.fastcampus.investment.dto.ProductResponse;
@@ -17,9 +16,7 @@ import java.util.List;
 
 import static com.fastcampus.investment.constants.InvestmentStatus.CANCELED;
 import static com.fastcampus.investment.constants.InvestmentStatus.INVESTED;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doReturn;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -105,9 +102,9 @@ class InvestmentServiceTest {
                 .build();
         expectedResponses.add(expectedResponse);
 
-        when(investmentService.updateInvestmentStatus(userId, product.getId(), CANCELED)).thenReturn(expectedResponses);
+        when(investmentService.updateInvestment(userId, product.getId(), CANCELED)).thenReturn(expectedResponses);
 
-        List<InvestmentResponse> responses = investmentService.updateInvestmentStatus(userId, product.getId(), CANCELED);
+        List<InvestmentResponse> responses = investmentService.updateInvestment(userId, product.getId(), CANCELED);
 
         assertEquals(expectedResponses.get(0).getId(), responses.get(0).getId());
         assertEquals(expectedResponses.get(0).getUserId(), responses.get(0).getUserId());

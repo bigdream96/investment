@@ -5,7 +5,7 @@ import com.fastcampus.investment.domain.Product;
 import com.fastcampus.investment.dto.ProductResponse;
 import com.fastcampus.investment.repository.InvestmentRepository;
 import com.fastcampus.investment.repository.ProductRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -13,18 +13,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@RequiredArgsConstructor
 public class ProductService {
 
     private static final Product EMPTY_PRODUCT = new Product();
 
     private final ProductRepository productRepository;
     private final InvestmentRepository investmentRepository;
-
-    @Autowired
-    public ProductService(ProductRepository productRepository, InvestmentRepository investmentRepository) {
-        this.productRepository = productRepository;
-        this.investmentRepository = investmentRepository;
-    }
 
     public static Product getEmptyProduct() {
         return EMPTY_PRODUCT;

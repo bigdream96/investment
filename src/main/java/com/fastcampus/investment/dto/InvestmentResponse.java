@@ -2,7 +2,6 @@ package com.fastcampus.investment.dto;
 
 import com.fastcampus.investment.constants.InvestmentStatus;
 import com.fastcampus.investment.domain.Investment;
-import com.fastcampus.investment.domain.Product;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
 
