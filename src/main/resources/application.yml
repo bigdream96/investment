@@ -28,3 +28,6 @@ spring:
         format-sql: true
 server:
   port: 8080
+logging:
+  level:
+    com.fastcampus.investment: DEBUG
