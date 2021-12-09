@@ -55,11 +55,4 @@ public class Apis {
         Message<List<InvestmentResponse>> message = Message.OK(investmentResponses);
         return new ResponseEntity<>(message, HttpStatus.OK);
     }
-
-    @GetMapping("test")
-    public ResponseEntity<Message<InvestmentResponse>> test() {
-        InvestmentResponse investmentResponse = InvestmentResponse.builder().id(1L).status(FAIL).build();
-        Message<InvestmentResponse> message = Message.OK(investmentResponse);
-        return new ResponseEntity<>(message, HttpStatus.OK);
-    }
 }
