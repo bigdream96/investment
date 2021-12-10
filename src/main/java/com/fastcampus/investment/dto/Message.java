@@ -47,6 +47,7 @@ public class Message<T> {
         return (Message<T>)Message.builder()
                 .transactionTime(LocalDateTime.now())
                 .resultCode(OK)
+                .isSuccess(true)
                 .description("Success!!!")
                 .data(data)
                 .build();
