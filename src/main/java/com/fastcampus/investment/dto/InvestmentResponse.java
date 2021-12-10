@@ -34,6 +34,7 @@ public class InvestmentResponse {
     public static InvestmentResponse entityToResponse(Investment investment) {
         return InvestmentResponse.builder()
                 .id(investment.getId())
+                .userId(investment.getUserId())
                 .status(investment.getStatus())
                 .investedAt(investment.getInvestedAt())
                 .investedAmount(investment.getInvestedAmount())
@@ -48,6 +49,7 @@ public class InvestmentResponse {
         for(Investment investment : investments) {
             InvestmentResponse investmentResponse = InvestmentResponse.builder()
                     .id(investment.getId())
+                    .userId(investment.getUserId())
                     .status(investment.getStatus())
                     .investedAt(investment.getInvestedAt())
                     .investedAmount(investment.getInvestedAmount())
