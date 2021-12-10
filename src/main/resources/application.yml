@@ -30,4 +30,5 @@ server:
   port: 8080
 logging:
   level:
-    com.fastcampus.investment: DEBUG
+    com.fastcampus.investment.aop.InvestmentAdvice: DEBUG
+    com.fastcampus.investment.exception.APIExceptionHandler: WARN

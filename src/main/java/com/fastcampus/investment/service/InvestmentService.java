@@ -4,6 +4,7 @@ import com.fastcampus.investment.constants.InvestmentStatus;
 import com.fastcampus.investment.domain.Investment;
 import com.fastcampus.investment.domain.Product;
 import com.fastcampus.investment.dto.InvestmentResponse;
+import com.fastcampus.investment.exception.APIException;
 import com.fastcampus.investment.repository.InvestmentRepository;
 import com.fastcampus.investment.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,8 +13,8 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
+import static com.fastcampus.investment.constants.ErrorCode.*;
 import static com.fastcampus.investment.constants.InvestmentStatus.FAIL;
 import static com.fastcampus.investment.constants.InvestmentStatus.INVESTED;
 import static com.fastcampus.investment.dto.InvestmentResponse.*;
@@ -26,24 +27,31 @@ public class InvestmentService {
     private final ProductRepository productRepository;
     private final InvestmentRepository investmentRepository;
 
-    public List<InvestmentResponse> searchInvestment(Long userId) {
-        Optional<List<Investment>> findInvestment = investmentRepository.findByUserId(userId);
+    public List<InvestmentResponse> searchInvestment(Long userId) throws APIException {
+        List<Investment> findInvestment = investmentRepository.findByUserId(userId);
 
-        return findInvestment.map(InvestmentResponse::entityToResponseList).orElseGet(InvestmentResponse::emptyResponseList);
+        if (findInvestment.isEmpty()) {
+            throw new APIException(NO_INVESTMENT_DATA, "userId : " + userId);
+        }
+
+        return InvestmentResponse.entityToResponseList(findInvestment);
     }
 
     public List<InvestmentResponse> updateInvestment(Long userId, Long productId, InvestmentStatus status) {
-        Optional<List<Investment>> findInvestment = investmentRepository.findByUserId(userId);
+        List<Investment> investments = investmentRepository.findByUserId(userId);
 
-        if(findInvestment.isPresent()) {
-            List<Investment> investments = findInvestment.get();
-            for(Investment investment : investments) {
-                if(Objects.equals(investment.getProduct().getId(), productId) && investment.getStatus() == INVESTED) {
+        if (!investments.isEmpty()) {
+            for (Investment investment : investments) {
+                if (Objects.equals(investment.getProduct().getId(), productId) && investment.getStatus() == INVESTED) {
                     investment.changeStatus(status);
                     investmentRepository.save(investment);
                     return entityToResponseList(List.of(investment));
+                } else {
+                    throw new APIException(WRONG_INVESTMENT_REQUEST, "userId : " + userId, "productId : " + productId, "status : " + status.toString());
                 }
             }
+        } else {
+            throw new APIException(NO_INVESTMENT_DATA, "userId : " + userId);
         }
 
         return emptyResponseList();

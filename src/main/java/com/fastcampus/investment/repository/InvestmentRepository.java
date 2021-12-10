@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface InvestmentRepository extends JpaRepository<Investment, Long> {
     List<Investment> findByProductId(Long id);
     List<Investment> findByProduct(Product product);
-    Optional<List<Investment>> findByUserId(Long userId);
+    List<Investment> findByUserId(Long userId);
 }

@@ -5,8 +5,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;
+
+import static org.springframework.http.HttpStatus.*;
 
 @Data
 @NoArgsConstructor
@@ -17,7 +20,7 @@ public class Message<T> {
     private LocalDateTime transactionTime;
 
     // api응답코드
-    private String resultCode;
+    private HttpStatus resultCode;
 
     // api성공여부
     private Boolean isSuccess;
@@ -33,7 +36,7 @@ public class Message<T> {
     public static <T> Message<T> OK(Boolean isSuccess) {
         return (Message<T>)Message.builder()
                 .transactionTime(LocalDateTime.now())
-                .resultCode("OK")
+                .resultCode(OK)
                 .isSuccess(isSuccess)
                 .description("Success!!!")
                 .build();
@@ -43,19 +46,30 @@ public class Message<T> {
     public static <T> Message<T> OK(T data) {
         return (Message<T>)Message.builder()
                 .transactionTime(LocalDateTime.now())
-                .resultCode("OK")
+                .resultCode(OK)
                 .description("Success!!!")
                 .data(data)
                 .build();
     }
 
     // ERROR
-    public static <T> Message<T> ERROR(Boolean isSuccess) {
+    public static <T> Message<T> ERROR(Boolean isSuccess, HttpStatus status, String message) {
         return (Message<T>)Message.builder()
                 .transactionTime(LocalDateTime.now())
-                .resultCode("ERROR")
+                .resultCode(status)
                 .isSuccess(isSuccess)
-                .description("Fail!!!")
+                .description(message)
+                .build();
+    }
+
+    // ERROR
+    public static <T> Message<T> ERROR(Boolean isSuccess, HttpStatus status, String message, String data) {
+        return (Message<T>)Message.builder()
+                .transactionTime(LocalDateTime.now())
+                .resultCode(status)
+                .isSuccess(isSuccess)
+                .description(message)
+                .data(data)
                 .build();
     }
 }
