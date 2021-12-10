@@ -13,7 +13,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.fastcampus.investment.constants.ErrorCode.NO_INVESTMENT_DATA;
 import static com.fastcampus.investment.constants.ErrorCode.NO_PRODUCT_DATA;
 
 @Service
