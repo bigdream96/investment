@@ -47,14 +47,7 @@ public class InvestmentResponse {
     public static List<InvestmentResponse> entityToResponseList(List<Investment> investments) {
         List<InvestmentResponse> investmentResponses = new ArrayList<>();
         for(Investment investment : investments) {
-            InvestmentResponse investmentResponse = InvestmentResponse.builder()
-                    .id(investment.getId())
-                    .userId(investment.getUserId())
-                    .status(investment.getStatus())
-                    .investedAt(investment.getInvestedAt())
-                    .investedAmount(investment.getInvestedAmount())
-                    .productResponse(ProductResponse.toDto(investment.getProduct()))
-                    .build();
+            InvestmentResponse investmentResponse = entityToResponse(investment);
             investmentResponses.add(investmentResponse);
         }
         return investmentResponses;
