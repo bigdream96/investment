@@ -16,8 +16,6 @@ import java.util.List;
 @ToString
 public class InvestmentResponse {
 
-    private static final List<InvestmentResponse> EMPTY_LIST = new ArrayList<>();
-
     private Long id;
 
     private Long userId;
@@ -42,8 +40,6 @@ public class InvestmentResponse {
                 .build();
     }
 
-
-
     public static List<InvestmentResponse> entityToResponseList(List<Investment> investments) {
         List<InvestmentResponse> investmentResponses = new ArrayList<>();
         for(Investment investment : investments) {
@@ -51,9 +47,5 @@ public class InvestmentResponse {
             investmentResponses.add(investmentResponse);
         }
         return investmentResponses;
-    }
-
-    public static List<InvestmentResponse> emptyResponseList() {
-        return EMPTY_LIST;
     }
 }
