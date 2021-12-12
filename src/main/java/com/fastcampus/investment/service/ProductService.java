@@ -41,27 +41,12 @@ public class ProductService {
             if (product.getStartedAt().isBefore(curDate)
                     && product.getFinishedAt().isAfter(curDate)) {
                 ProductResponse prDto = ProductResponse.toDto(product);
-                prDto.setInvestedAmount(calcInvestedAmount(product));
-                prDto.setInvestedCount(cntInvested(product));
+                prDto.setInvestedAmount(investmentRepository.findByProduct(product).orElse(new ArrayList<>()).stream().mapToLong(Investment::getInvestedAmount).sum());
+                prDto.setInvestedCount(investmentRepository.countByProduct(product).orElse(0));
                 result.add(prDto);
             }
         }
 
         return result;
-    }
-
-    private long calcInvestedAmount(Product product) {
-        List<Investment> investments = investmentRepository.findByProduct(product);
-
-        long total = 0L;
-        for(Investment investment : investments)
-            total += investment.getInvestedAmount();
-
-        return total;
-    }
-
-    private int cntInvested(Product product) {
-        List<Investment> investments = investmentRepository.findByProduct(product);
-        return investments.size();
     }
 }

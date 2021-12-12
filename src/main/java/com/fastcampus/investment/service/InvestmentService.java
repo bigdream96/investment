@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -18,7 +19,6 @@ import static com.fastcampus.investment.constants.ErrorCode.*;
 import static com.fastcampus.investment.constants.InvestmentStatus.FAIL;
 import static com.fastcampus.investment.constants.InvestmentStatus.INVESTED;
 import static com.fastcampus.investment.dto.InvestmentResponse.*;
-import static com.fastcampus.investment.service.ProductService.getEmptyProduct;
 
 @Service
 @RequiredArgsConstructor
@@ -28,42 +28,36 @@ public class InvestmentService {
     private final InvestmentRepository investmentRepository;
 
     public List<InvestmentResponse> searchInvestment(Long userId) throws APIException {
-        List<Investment> findInvestment = investmentRepository.findByUserId(userId);
-
-        if (findInvestment.isEmpty()) {
-            throw new APIException(NO_INVESTMENT_DATA, "userId : " + userId);
-        }
+        List<Investment> findInvestment = investmentRepository.findByUserId(userId).orElseThrow(() -> new APIException(NO_INVESTMENT_DATA, "userId : " + userId));
 
         return InvestmentResponse.entityToResponseList(findInvestment);
     }
 
     public List<InvestmentResponse> updateInvestment(Long userId, Long productId, InvestmentStatus status) {
-        List<Investment> investments = investmentRepository.findByUserId(userId);
+        List<Investment> investments = investmentRepository.findByUserId(userId).orElseThrow(() -> new APIException(NO_INVESTMENT_DATA, "userId : " + userId));
 
-        if (!investments.isEmpty()) {
-            for (Investment investment : investments) {
-                if (Objects.equals(investment.getProduct().getId(), productId) && investment.getStatus() == INVESTED) {
-                    investment.changeStatus(status);
-                    investmentRepository.save(investment);
-                    return entityToResponseList(List.of(investment));
-                } else {
-                    throw new APIException(WRONG_INVESTMENT_REQUEST, "userId : " + userId, "productId : " + productId, "status : " + status.toString());
-                }
+        List<Investment> result = new ArrayList<>();
+        for (Investment investment : investments) {
+            if (Objects.equals(investment.getProduct().getId(), productId) && investment.getStatus() == INVESTED) {
+                investment.changeStatus(status);
+                investmentRepository.save(investment);
+                result = List.of(investment);
+            } else {
+                throw new APIException(WRONG_INVESTMENT_REQUEST, "userId : " + userId, "productId : " + productId, "status : " + status.toString());
             }
-        } else {
-            throw new APIException(NO_INVESTMENT_DATA, "userId : " + userId);
         }
 
-        return emptyResponseList();
+        return entityToResponseList(result);
     }
 
     public InvestmentResponse invest(Long userId, Long productId, Long investAmount) {
-        Product product = productRepository.findById(productId).orElse(getEmptyProduct());
-        List<Investment> investments = investmentRepository.findByProductId(product.getId());
-        InvestmentStatus investmentStatus = INVESTED;
+        Product product = productRepository.findById(productId).orElseThrow(
+                () -> new APIException(NO_PRODUCT_DATA, "userId : " + userId, "productId : " + productId, "investAmount : " + investAmount)
+        );
 
         Long goalAmount = product.getTotalInvestingAmount();
-        Long totalInvested = getCurrentTotalInvested(investments);
+        Long totalInvested = investmentRepository.findByProduct(product).orElse(new ArrayList<>()).stream().mapToLong(Investment::getInvestedAmount).sum();
+        InvestmentStatus investmentStatus = INVESTED;
         if (isNoTotalInvestment(totalInvested, goalAmount)) {
             investmentStatus = FAIL;
         }
@@ -81,13 +75,6 @@ public class InvestmentService {
         Investment findInvestment = investmentRepository.save(investment);
 
         return entityToResponse(findInvestment);
-    }
-
-    private Long getCurrentTotalInvested(List<Investment> investments) {
-        Long total = 0L;
-        for (Investment investment : investments)
-            total += investment.getInvestedAmount();
-        return total;
     }
 
     private boolean isNoTotalInvestment(Long total, Long goalAmount) {

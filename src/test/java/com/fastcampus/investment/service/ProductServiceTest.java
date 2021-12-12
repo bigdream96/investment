@@ -4,7 +4,6 @@ import com.fastcampus.investment.domain.Product;
 import com.fastcampus.investment.dto.ProductResponse;
 import com.fastcampus.investment.repository.InvestmentRepository;
 import com.fastcampus.investment.repository.ProductRepository;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -37,19 +36,22 @@ class ProductServiceTest {
     @BeforeEach
     void init() {
         List<Product> productList = new ArrayList<>();
+        LocalDate staDate = LocalDate.of(2021, 1, 1);
+        LocalDate endDate = LocalDate.of(2021, 12, 31);
+
         oldProduct = Product.builder()
                 .id(1L)
                 .title("You can be elon musk")
                 .totalInvestingAmount(100_000_000L)
-                .startedAt(LocalDate.now().minusDays(6))
-                .finishedAt(LocalDate.now().minusDays(3))
+                .startedAt(staDate.minusDays(6))
+                .finishedAt(staDate.minusDays(3))
                 .build();
         currentProduct = Product.builder()
                 .id(2L)
                 .title("TOBE-RICH of Warren Buffett")
                 .totalInvestingAmount(600_000_000L)
-                .startedAt(LocalDate.now().minusDays(3))
-                .finishedAt(LocalDate.now().plusDays(3))
+                .startedAt(staDate.plusDays(3))
+                .finishedAt(endDate.minusDays(3))
                 .build();
         productList.add(oldProduct);
         productList.add(currentProduct);
