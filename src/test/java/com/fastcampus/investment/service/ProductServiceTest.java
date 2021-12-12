@@ -17,6 +17,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -39,14 +40,14 @@ class ProductServiceTest {
         oldProduct = Product.builder()
                 .id(1L)
                 .title("You can be elon musk")
-                .totalInvestingAmount(100000000L)
+                .totalInvestingAmount(100_000_000L)
                 .startedAt(LocalDate.now().minusDays(6))
                 .finishedAt(LocalDate.now().minusDays(3))
                 .build();
         currentProduct = Product.builder()
                 .id(2L)
                 .title("TOBE-RICH of Warren Buffett")
-                .totalInvestingAmount(600000000L)
+                .totalInvestingAmount(600_000_000L)
                 .startedAt(LocalDate.now().minusDays(3))
                 .finishedAt(LocalDate.now().plusDays(3))
                 .build();
@@ -61,8 +62,10 @@ class ProductServiceTest {
     void inquireInvestableProducts() {
         List<ProductResponse> productList = productService.inquireInvestableProducts();
 
-        Assertions.assertEquals(1, productList.size());
-        Assertions.assertEquals(currentProduct.getId(), productList.get(0).getId());
-        Assertions.assertNotEquals(oldProduct.getId(), productList.get(0).getId());
+        assertAll(
+                () -> assertEquals(1, productList.size()),
+                () -> assertEquals(currentProduct.getId(), productList.get(0).getId()),
+                () -> assertNotEquals(oldProduct.getId(), productList.get(0).getId())
+        );
     }
 }
