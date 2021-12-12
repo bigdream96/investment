@@ -19,14 +19,8 @@ import static com.fastcampus.investment.constants.ErrorCode.NO_PRODUCT_DATA;
 @RequiredArgsConstructor
 public class ProductService {
 
-    private static final Product EMPTY_PRODUCT = new Product();
-
     private final ProductRepository productRepository;
     private final InvestmentRepository investmentRepository;
-
-    public static Product getEmptyProduct() {
-        return EMPTY_PRODUCT;
-    }
 
     public List<ProductResponse> inquireInvestableProducts() throws APIException {
         List<ProductResponse> result = new ArrayList<>();
