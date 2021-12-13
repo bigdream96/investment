@@ -69,7 +69,7 @@ class InvestmentTest {
         investmentList.add(investment2);
 
         investmentRepository.saveAll(investmentList);
-        List<Investment> findInvestmentList = investmentRepository.findByProduct(product).orElse(new ArrayList<>());
+        List<Investment> findInvestmentList = investmentRepository.findByProduct(product);
 
         assertEquals(investmentList, findInvestmentList);
     }

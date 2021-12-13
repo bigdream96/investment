@@ -35,7 +35,7 @@ public class ProductService {
             if (product.getStartedAt().isBefore(curDate)
                     && product.getFinishedAt().isAfter(curDate)) {
                 ProductResponse prDto = ProductResponse.toDto(product);
-                prDto.setInvestedAmount(investmentRepository.findByProduct(product).orElse(new ArrayList<>()).stream().mapToLong(Investment::getInvestedAmount).sum());
+                prDto.setInvestedAmount(investmentRepository.findByProduct(product).stream().mapToLong(Investment::getInvestedAmount).sum());
                 prDto.setInvestedCount(investmentRepository.countByProduct(product).orElse(0));
                 result.add(prDto);
             }

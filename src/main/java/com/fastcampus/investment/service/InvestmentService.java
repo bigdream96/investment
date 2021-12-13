@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.fastcampus.investment.constants.ErrorCode.*;
 import static com.fastcampus.investment.constants.InvestmentStatus.FAIL;
@@ -28,13 +29,19 @@ public class InvestmentService {
     private final InvestmentRepository investmentRepository;
 
     public List<InvestmentResponse> searchInvestment(Long userId) throws APIException {
-        List<Investment> findInvestment = investmentRepository.findByUserId(userId).orElseThrow(() -> new APIException(NO_INVESTMENT_DATA, "userId : " + userId));
+        List<Investment> findInvestment = investmentRepository.findByUserId(userId);
+
+        if(findInvestment.isEmpty())
+            throw new APIException(NO_INVESTMENT_DATA, "userId : " + userId);
 
         return InvestmentResponse.entityToResponseList(findInvestment);
     }
 
     public List<InvestmentResponse> updateInvestment(Long userId, Long productId, InvestmentStatus status) {
-        List<Investment> investments = investmentRepository.findByUserId(userId).orElseThrow(() -> new APIException(NO_INVESTMENT_DATA, "userId : " + userId));
+        List<Investment> investments = investmentRepository.findByUserId(userId);
+
+        if(investments.isEmpty())
+            throw new APIException(NO_INVESTMENT_DATA, "userId : " + userId);
 
         List<Investment> result = new ArrayList<>();
         for (Investment investment : investments) {
@@ -56,7 +63,7 @@ public class InvestmentService {
         );
 
         Long goalAmount = product.getTotalInvestingAmount();
-        Long totalInvested = investmentRepository.findByProduct(product).orElse(new ArrayList<>()).stream().mapToLong(Investment::getInvestedAmount).sum();
+        Long totalInvested = investmentRepository.findByProduct(product).stream().mapToLong(Investment::getInvestedAmount).sum();
         InvestmentStatus investmentStatus = INVESTED;
         if (isNoTotalInvestment(totalInvested, goalAmount)) {
             investmentStatus = FAIL;
