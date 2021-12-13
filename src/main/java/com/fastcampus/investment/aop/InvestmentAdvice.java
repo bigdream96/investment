@@ -1,5 +1,6 @@
 package com.fastcampus.investment.aop;
 
+import com.fastcampus.investment.util.LogUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.Aspect;
@@ -14,47 +15,45 @@ import java.util.Arrays;
 @Aspect
 public class InvestmentAdvice {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(InvestmentAdvice.class);
-
     @Before("com.fastcampus.investment.aop.InvestmentPointcut.apiPointcut()")
     public void beforeControllerLog(JoinPoint jp) {
         String method = jp.getSignature().getName();
         Object[] args = jp.getArgs();
-        LOGGER.debug("[ API ] " + method + "() 매개변수 : " + Arrays.toString(args));
+        LogUtil.recordLog("[ API ] " + method + "() 매개변수 : " + Arrays.toString(args));
     }
 
     @AfterReturning(pointcut = "com.fastcampus.investment.aop.InvestmentPointcut.apiPointcut()", returning = "returnObj")
     public void afterControllerLog(JoinPoint jp, Object returnObj) {
         String method = jp.getSignature().getName();
         if(returnObj != null)
-            LOGGER.debug("[ API ] " + method + "() 리턴값 : " + returnObj);
+            LogUtil.recordLog("[ API ] " + method + "() 리턴값 : " + returnObj);
     }
 
     @Before("com.fastcampus.investment.aop.InvestmentPointcut.servicePointcut()")
     public void beforeServiceLog(JoinPoint jp) {
         String method = jp.getSignature().getName();
         Object[] args = jp.getArgs();
-        LOGGER.debug("[ 서비스 ] " + method + "() 매개변수 : " + Arrays.toString(args));
+        LogUtil.recordLog("[ 서비스 ] " + method + "() 매개변수 : " + Arrays.toString(args));
     }
 
     @AfterReturning(pointcut = "com.fastcampus.investment.aop.InvestmentPointcut.servicePointcut()", returning = "returnObj")
     public void afterServiceLog(JoinPoint jp, Object returnObj) {
         String method = jp.getSignature().getName();
         if(returnObj != null)
-            LOGGER.debug("[ 서비스 ] " + method + "() 리턴값 : " + returnObj);
+            LogUtil.recordLog("[ 서비스 ] " + method + "() 리턴값 : " + returnObj);
     }
 
     @Before("com.fastcampus.investment.aop.InvestmentPointcut.repositoryPointcut()")
     public void beforeRepositoryLog(JoinPoint jp) {
         String method = jp.getSignature().getName();
         Object[] args = jp.getArgs();
-        LOGGER.debug("[ 레파지토리 ] " + method + "() 매개변수 : " + Arrays.toString(args));
+        LogUtil.recordLog("[ 레파지토리 ] " + method + "() 매개변수 : " + Arrays.toString(args));
     }
 
     @AfterReturning(pointcut = "com.fastcampus.investment.aop.InvestmentPointcut.repositoryPointcut()", returning = "returnObj")
     public void afterRepositoryLog(JoinPoint jp, Object returnObj) {
         String method = jp.getSignature().getName();
         if(returnObj != null)
-            LOGGER.debug("[ 레파지토리 ] " + method + "() 리턴값 : " + returnObj);
+            LogUtil.recordLog("[ 레파지토리 ] " + method + "() 리턴값 : " + returnObj);
     }
 }

@@ -54,22 +54,22 @@ public class Message<T> {
     }
 
     // ERROR
-    public static <T> Message<T> ERROR(Boolean isSuccess, HttpStatus status, String message) {
+    public static <T> Message<T> ERROR(Boolean isSuccess, HttpStatus status, String description) {
         return (Message<T>)Message.builder()
                 .transactionTime(LocalDateTime.now())
                 .resultCode(status)
                 .isSuccess(isSuccess)
-                .description(message)
+                .description(description)
                 .build();
     }
 
     // ERROR
-    public static <T> Message<T> ERROR(Boolean isSuccess, HttpStatus status, String message, String data) {
+    public static <T> Message<T> ERROR(Boolean isSuccess, HttpStatus status, String description, String data) {
         return (Message<T>)Message.builder()
                 .transactionTime(LocalDateTime.now())
                 .resultCode(status)
                 .isSuccess(isSuccess)
-                .description(message)
+                .description(description)
                 .data(data)
                 .build();
     }

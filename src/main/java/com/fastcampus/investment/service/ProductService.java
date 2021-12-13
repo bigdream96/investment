@@ -27,9 +27,8 @@ public class ProductService {
         List<Product> products = productRepository.findAll();
         LocalDate curDate = LocalDate.now();
 
-        if(products.isEmpty()) {
+        if(products.isEmpty())
             throw new APIException(NO_PRODUCT_DATA);
-        }
 
         for (Product product : products) {
             if (product.getStartedAt().isBefore(curDate)
