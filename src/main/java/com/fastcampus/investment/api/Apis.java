@@ -52,7 +52,7 @@ public class Apis {
     @PutMapping("investment/{productId}")
     public ResponseEntity<Message<List<InvestmentResponse>>> updateInvestment(@RequestHeader(value = USER_ID) @NotNull @Positive Long userId,
                                                                               @PathVariable("productId") @NotNull @Positive Long productId,
-                                                                              @RequestParam @NotBlank InvestmentStatus status) {
+                                                                              @RequestParam @NotNull InvestmentStatus status) {
         List<InvestmentResponse> investmentResponses = investmentService.updateInvestment(userId, productId, status);
         Message<List<InvestmentResponse>> message = Message.OK(investmentResponses);
         return new ResponseEntity<>(message, OK);
