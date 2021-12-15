@@ -32,16 +32,6 @@ public class Message<T> {
     @JsonProperty("data")
     private T data;
 
-    // OK
-    public static <T> Message<T> OK(Boolean isSuccess) {
-        return (Message<T>)Message.builder()
-                .transactionTime(LocalDateTime.now())
-                .resultCode(OK)
-                .isSuccess(isSuccess)
-                .description("Success!!!")
-                .build();
-    }
-
     // DATA OK
     public static <T> Message<T> OK(T data) {
         return (Message<T>)Message.builder()
@@ -54,21 +44,21 @@ public class Message<T> {
     }
 
     // ERROR
-    public static <T> Message<T> ERROR(Boolean isSuccess, HttpStatus status, String description) {
+    public static <T> Message<T> ERROR(HttpStatus status, String description) {
         return (Message<T>)Message.builder()
                 .transactionTime(LocalDateTime.now())
                 .resultCode(status)
-                .isSuccess(isSuccess)
+                .isSuccess(false)
                 .description(description)
                 .build();
     }
 
     // ERROR
-    public static <T> Message<T> ERROR(Boolean isSuccess, HttpStatus status, String description, String data) {
+    public static <T> Message<T> ERROR(HttpStatus status, String description, String data) {
         return (Message<T>)Message.builder()
                 .transactionTime(LocalDateTime.now())
                 .resultCode(status)
-                .isSuccess(isSuccess)
+                .isSuccess(false)
                 .description(description)
                 .data(data)
                 .build();

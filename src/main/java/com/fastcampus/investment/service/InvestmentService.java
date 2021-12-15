@@ -14,7 +14,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 
 import static com.fastcampus.investment.constants.ErrorCode.*;
 import static com.fastcampus.investment.constants.InvestmentStatus.FAIL;
@@ -34,7 +33,7 @@ public class InvestmentService {
         if(findInvestment.isEmpty())
             throw new APIException(NO_INVESTMENT_DATA, "userId : " + userId);
 
-        return InvestmentResponse.entityToResponseList(findInvestment);
+        return entityToResponseList(findInvestment);
     }
 
     public List<InvestmentResponse> updateInvestment(Long userId, Long productId, InvestmentStatus status) {
