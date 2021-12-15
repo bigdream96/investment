@@ -25,7 +25,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     protected ResponseEntity<Message<String>> handleException(Exception e) {
         log.warn("[ 예외발생 ] " + e.getMessage());
-        return new ResponseEntity<>(Message.ERROR(INTERNAL_SERVER_ERROR, e.getMessage()), INTERNAL_SERVER_ERROR);
+        return new ResponseEntity<>(Message.ERROR(e.getMessage()), INTERNAL_SERVER_ERROR);
     }
 
     @ExceptionHandler(value = APIException.class)
@@ -38,7 +38,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         else
             httpStatus = BAD_REQUEST;
 
-        Message<String> message = Message.ERROR(httpStatus, ae.getMessage(), ae.getData());
+        Message<String> message = Message.ERROR(ae.getMessage(), ae.getData());
         log.warn("[ 예외발생 ] " + ae.getMessage() + ", data=" + ae.getData());
         return new ResponseEntity<>(message, httpStatus);
     }
@@ -46,21 +46,21 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = MissingRequestHeaderException.class)
     protected ResponseEntity<Message<String>> handleMissingRequestHeaderException(MissingRequestHeaderException e) {
         log.warn("[ 예외발생 ] " + e.getMessage());
-        Message<String> message = Message.ERROR(BAD_REQUEST, "요청 헤더 값이 누락되거나 바인딩할 수 없습니다.", e.getMessage());
+        Message<String> message = Message.ERROR("요청 헤더 값이 누락되거나 바인딩할 수 없습니다.", e.getMessage());
         return new ResponseEntity<>(message, BAD_REQUEST);
     }
 
     @ExceptionHandler(value = ConstraintViolationException.class)
     protected ResponseEntity<Message<String>> handleConstraintViolationException(ConstraintViolationException e) {
         log.warn("[ 예외발생 ] " + e.getMessage());
-        Message<String> message = Message.ERROR(BAD_REQUEST, "유효하지 않은 값입니다.", e.getMessage());
+        Message<String> message = Message.ERROR("유효하지 않은 값입니다.", e.getMessage());
         return new ResponseEntity<>(message, BAD_REQUEST);
     }
 
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.warn("[ 예외발생 ] " + e.getMessage());
-        Message<String> message = Message.ERROR(status, "요청 파라미터 값이 누락되거나 잘못된 값입니다.", e.getMessage());
+        Message<String> message = Message.ERROR("요청 파라미터 값이 누락되거나 잘못된 값입니다.", e.getMessage());
         return new ResponseEntity<>(message, status);
     }
 }

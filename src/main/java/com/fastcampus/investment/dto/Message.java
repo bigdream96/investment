@@ -16,12 +16,6 @@ import static org.springframework.http.HttpStatus.*;
 @AllArgsConstructor
 @Builder
 public class Message<T> {
-    // api통신시간
-    private LocalDateTime transactionTime;
-
-    // api응답코드
-    private HttpStatus resultCode;
-
     // api성공여부
     private Boolean isSuccess;
 
@@ -35,8 +29,6 @@ public class Message<T> {
     // DATA OK
     public static <T> Message<T> OK(T data) {
         return (Message<T>)Message.builder()
-                .transactionTime(LocalDateTime.now())
-                .resultCode(OK)
                 .isSuccess(true)
                 .description("Success!!!")
                 .data(data)
@@ -44,20 +36,16 @@ public class Message<T> {
     }
 
     // ERROR
-    public static <T> Message<T> ERROR(HttpStatus status, String description) {
+    public static <T> Message<T> ERROR(String description) {
         return (Message<T>)Message.builder()
-                .transactionTime(LocalDateTime.now())
-                .resultCode(status)
                 .isSuccess(false)
                 .description(description)
                 .build();
     }
 
     // ERROR
-    public static <T> Message<T> ERROR(HttpStatus status, String description, String data) {
+    public static <T> Message<T> ERROR(String description, String data) {
         return (Message<T>)Message.builder()
-                .transactionTime(LocalDateTime.now())
-                .resultCode(status)
                 .isSuccess(false)
                 .description(description)
                 .data(data)
