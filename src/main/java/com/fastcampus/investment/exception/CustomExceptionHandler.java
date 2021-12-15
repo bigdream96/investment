@@ -24,7 +24,6 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     protected ResponseEntity<Message<String>> handleException(Exception e) {
-        System.out.println(e.getClass());
         log.warn("[ 예외발생 ] " + e.getMessage());
         return new ResponseEntity<>(Message.ERROR(INTERNAL_SERVER_ERROR, e.getMessage()), INTERNAL_SERVER_ERROR);
     }
