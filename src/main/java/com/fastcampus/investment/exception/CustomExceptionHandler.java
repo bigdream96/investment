@@ -13,6 +13,8 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javax.validation.ConstraintViolationException;
+
 import static com.fastcampus.investment.constants.ErrorCode.*;
 import static org.springframework.http.HttpStatus.*;
 
@@ -22,6 +24,7 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
     protected ResponseEntity<Message<String>> handleException(Exception e) {
+        System.out.println(e.getClass());
         log.warn("[ 예외발생 ] " + e.getMessage());
         return new ResponseEntity<>(Message.ERROR(INTERNAL_SERVER_ERROR, e.getMessage()), INTERNAL_SERVER_ERROR);
     }
@@ -44,14 +47,21 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler(value = MissingRequestHeaderException.class)
     protected ResponseEntity<Message<String>> handleMissingRequestHeaderException(MissingRequestHeaderException e) {
         log.warn("[ 예외발생 ] " + e.getMessage());
-        Message<String> message = Message.ERROR(BAD_REQUEST, "요청 헤더 값이 누락되거나 바인딩할 수 없습니다.");
+        Message<String> message = Message.ERROR(BAD_REQUEST, "요청 헤더 값이 누락되거나 바인딩할 수 없습니다.", e.getMessage());
+        return new ResponseEntity<>(message, BAD_REQUEST);
+    }
+
+    @ExceptionHandler(value = ConstraintViolationException.class)
+    protected ResponseEntity<Message<String>> handleConstraintViolationException(ConstraintViolationException e) {
+        log.warn("[ 예외발생 ] " + e.getMessage());
+        Message<String> message = Message.ERROR(BAD_REQUEST, "유효하지 않은 값입니다.", e.getMessage());
         return new ResponseEntity<>(message, BAD_REQUEST);
     }
 
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.warn("[ 예외발생 ] " + e.getMessage());
-        Message<String> message = Message.ERROR(status, "요청 파라미터 값이 누락되거나 잘못된 값입니다.");
+        Message<String> message = Message.ERROR(status, "요청 파라미터 값이 누락되거나 잘못된 값입니다.", e.getMessage());
         return new ResponseEntity<>(message, status);
     }
 }
