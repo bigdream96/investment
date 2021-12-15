@@ -47,11 +47,12 @@ public class InvestmentService {
             if (Objects.equals(investment.getProduct().getId(), productId) && investment.getStatus() == INVESTED) {
                 investment.changeStatus(status);
                 investmentRepository.save(investment);
-                result = List.of(investment);
-            } else {
-                throw new APIException(WRONG_INVESTMENT_REQUEST, "userId : " + userId, "productId : " + productId, "status : " + status.toString());
+                result.add(investment);
             }
         }
+
+        if(result.isEmpty())
+            throw new APIException(WRONG_INVESTMENT_REQUEST, "userId : " + userId, "productId : " + productId, "status : " + status.toString());
 
         return entityToResponseList(result);
     }
