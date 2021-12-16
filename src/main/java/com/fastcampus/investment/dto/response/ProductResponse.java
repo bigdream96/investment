@@ -6,11 +6,12 @@ import lombok.*;
 
 import java.time.LocalDate;
 
-@Data
 @Builder
+@Getter
+@Setter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class ProductResponse {
     private Long id;
 
@@ -28,7 +29,7 @@ public class ProductResponse {
 
     private Integer investedCount;
 
-    public static ProductResponse toDto(Product product) {
+    public static ProductResponse entityToResponse(Product product) {
         return ProductResponse.builder()
                 .id(product.getId())
                 .title(product.getTitle())

@@ -44,7 +44,7 @@ class InvestmentServiceTest {
         Long investAmount = 10000L;
 
         InvestmentResponse expectedResponse = InvestmentResponse.builder()
-                .productResponse(ProductResponse.toDto(product))
+                .productResponse(ProductResponse.entityToResponse(product))
                 .investedAmount(investAmount)
                 .status(INVESTED)
                 .investedAt(LocalDate.now())
@@ -69,7 +69,7 @@ class InvestmentServiceTest {
 
         List<InvestmentResponse> expectedResponses = new ArrayList<>();
         InvestmentResponse expectedResponse = InvestmentResponse.builder()
-                .productResponse(ProductResponse.toDto(product))
+                .productResponse(ProductResponse.entityToResponse(product))
                 .investedAmount(investAmount)
                 .status(INVESTED)
                 .investedAt(LocalDate.now())
@@ -94,7 +94,7 @@ class InvestmentServiceTest {
         Long investAmount = 10000L;
 
         InvestmentResponse expectedResponse = InvestmentResponse.builder()
-                .productResponse(ProductResponse.toDto(product))
+                .productResponse(ProductResponse.entityToResponse(product))
                 .investedAmount(investAmount)
                 .status(CANCELED)
                 .investedAt(LocalDate.now())

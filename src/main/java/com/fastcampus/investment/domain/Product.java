@@ -4,7 +4,6 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.Objects;
 
 @Entity
 @Table(name = "PRODUCTS")
@@ -29,18 +28,4 @@ public class Product {
 
     @Column(nullable = false)
     private LocalDate finishedAt;
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Product product = (Product) o;
-        return Objects.equals(id, product.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(id);
-    }
-
 }

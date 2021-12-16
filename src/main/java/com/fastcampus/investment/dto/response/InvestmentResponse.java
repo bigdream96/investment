@@ -9,11 +9,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-@Getter
 @Builder
+@Getter
+@ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class InvestmentResponse {
 
     private Long id;
@@ -36,7 +36,7 @@ public class InvestmentResponse {
                 .status(investment.getStatus())
                 .investedAt(investment.getInvestedAt())
                 .investedAmount(investment.getInvestedAmount())
-                .productResponse(ProductResponse.toDto(investment.getProduct()))
+                .productResponse(ProductResponse.entityToResponse(investment.getProduct()))
                 .build();
     }
 
