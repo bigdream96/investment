@@ -46,12 +46,12 @@ public class Apis {
         return toResponse(investmentResponse);
     }
 
-    @PutMapping("investment/{productId}")
-    public ResponseEntity<Message<List<InvestmentResponse>>> updateInvestment(@RequestHeader(value = USER_ID) @NotNull @Positive Long userId,
-                                                                              @PathVariable("productId") @NotNull @Positive Long productId,
-                                                                              @RequestParam @NotNull InvestmentStatus status) {
-        List<InvestmentResponse> investmentResponses = investmentService.updateInvestment(userId, productId, status);
-        return toResponse(investmentResponses);
+    @PutMapping("investment/{investmentId}")
+    public ResponseEntity<Message<InvestmentResponse>> updateInvestment(@RequestHeader(value = USER_ID) @NotNull @Positive Long userId,
+                                                                        @PathVariable("investmentId") @NotNull @Positive Long investmentId,
+                                                                        @RequestParam @NotNull InvestmentStatus status) {
+        InvestmentResponse investmentResponse = investmentService.updateInvestment(userId, investmentId, status);
+        return toResponse(investmentResponse);
     }
 
     private static <T> ResponseEntity<Message<T>> toResponse(T data) {

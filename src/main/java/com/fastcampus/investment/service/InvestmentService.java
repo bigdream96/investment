@@ -14,6 +14,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+import java.util.Optional;
 
 import static com.fastcampus.investment.constants.ErrorCode.*;
 import static com.fastcampus.investment.constants.InvestmentStatus.FAIL;
@@ -34,27 +35,6 @@ public class InvestmentService {
             throw new APIException(NO_INVESTMENT_DATA, "userId : " + userId);
 
         return entityToResponseList(findInvestment);
-    }
-
-    public List<InvestmentResponse> updateInvestment(Long userId, Long productId, InvestmentStatus status) {
-        List<Investment> investments = investmentRepository.findByUserId(userId);
-
-        if(investments.isEmpty())
-            throw new APIException(NO_INVESTMENT_DATA, "userId : " + userId);
-
-        List<Investment> result = new ArrayList<>();
-        for (Investment investment : investments) {
-            if (Objects.equals(investment.getProduct().getId(), productId) && investment.getStatus() == INVESTED) {
-                investment.changeStatus(status);
-                investmentRepository.save(investment);
-                result.add(investment);
-            }
-        }
-
-        if(result.isEmpty())
-            throw new APIException(WRONG_INVESTMENT_REQUEST, "userId : " + userId, "productId : " + productId, "status : " + status.toString());
-
-        return entityToResponseList(result);
     }
 
     public InvestmentResponse invest(Long userId, Long productId, Long investAmount) {
@@ -82,6 +62,18 @@ public class InvestmentService {
         Investment findInvestment = investmentRepository.save(investment);
 
         return entityToResponse(findInvestment);
+    }
+
+    public InvestmentResponse updateInvestment(Long userId, Long investmentId, InvestmentStatus status) {
+        Investment investment = investmentRepository.findById(investmentId).orElseThrow(() -> new APIException(NO_INVESTMENT_DATA, "investmentId : " + investmentId));
+
+        if(!Objects.equals(investment.getUserId(), userId))
+            throw new APIException(WRONG_INVESTMENT_REQUEST, "userId : " + userId);
+
+        investment.changeStatus(status);
+        investmentRepository.save(investment);
+
+        return entityToResponse(investment);
     }
 
     private boolean isNoTotalInvestment(Long total, Long goalAmount) {

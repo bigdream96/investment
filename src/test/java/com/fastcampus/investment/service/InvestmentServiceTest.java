@@ -93,23 +93,21 @@ class InvestmentServiceTest {
         Long userId = 1L;
         Long investAmount = 10000L;
 
-        List<InvestmentResponse> expectedResponses = new ArrayList<>();
         InvestmentResponse expectedResponse = InvestmentResponse.builder()
                 .productResponse(ProductResponse.toDto(product))
                 .investedAmount(investAmount)
                 .status(CANCELED)
                 .investedAt(LocalDate.now())
                 .build();
-        expectedResponses.add(expectedResponse);
 
-        when(investmentService.updateInvestment(userId, product.getId(), CANCELED)).thenReturn(expectedResponses);
+        when(investmentService.updateInvestment(userId, product.getId(), CANCELED)).thenReturn(expectedResponse);
 
-        List<InvestmentResponse> responses = investmentService.updateInvestment(userId, product.getId(), CANCELED);
+        InvestmentResponse response = investmentService.updateInvestment(userId, product.getId(), CANCELED);
 
-        assertEquals(expectedResponses.get(0).getId(), responses.get(0).getId());
-        assertEquals(expectedResponses.get(0).getUserId(), responses.get(0).getUserId());
-        assertEquals(expectedResponses.get(0).getStatus(), responses.get(0).getStatus());
-        assertEquals(expectedResponses.get(0).getInvestedAmount(), responses.get(0).getInvestedAmount());
-        assertEquals(expectedResponses.get(0).getInvestedAt(), responses.get(0).getInvestedAt());
+        assertEquals(expectedResponse.getId(), response.getId());
+        assertEquals(expectedResponse.getUserId(), response.getUserId());
+        assertEquals(expectedResponse.getStatus(), response.getStatus());
+        assertEquals(expectedResponse.getInvestedAmount(), response.getInvestedAmount());
+        assertEquals(expectedResponse.getInvestedAt(), response.getInvestedAt());
     }
 }
