@@ -1,4 +1,4 @@
-package com.fastcampus.investment.dto;
+package com.fastcampus.investment.dto.response;
 
 import com.fastcampus.investment.constants.InvestmentStatus;
 import com.fastcampus.investment.domain.Investment;

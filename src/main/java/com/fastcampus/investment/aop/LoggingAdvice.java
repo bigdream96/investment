@@ -12,7 +12,7 @@ import java.util.Arrays;
 @Slf4j
 @Component
 @Aspect
-public class InvestmentAdvice {
+public class LoggingAdvice {
 
     @Before("com.fastcampus.investment.aop.InvestmentPointcut.apiPointcut()")
     public void beforeControllerLog(JoinPoint jp) {

@@ -1,7 +1,7 @@
 package com.fastcampus.investment.service;
 
 import com.fastcampus.investment.domain.Product;
-import com.fastcampus.investment.dto.ProductResponse;
+import com.fastcampus.investment.dto.response.ProductResponse;
 import com.fastcampus.investment.repository.InvestmentRepository;
 import com.fastcampus.investment.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;

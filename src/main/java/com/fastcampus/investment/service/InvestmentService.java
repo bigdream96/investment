@@ -3,7 +3,7 @@ package com.fastcampus.investment.service;
 import com.fastcampus.investment.constants.InvestmentStatus;
 import com.fastcampus.investment.domain.Investment;
 import com.fastcampus.investment.domain.Product;
-import com.fastcampus.investment.dto.InvestmentResponse;
+import com.fastcampus.investment.dto.response.InvestmentResponse;
 import com.fastcampus.investment.exception.APIException;
 import com.fastcampus.investment.repository.InvestmentRepository;
 import com.fastcampus.investment.repository.ProductRepository;
@@ -18,7 +18,7 @@ import java.util.Objects;
 import static com.fastcampus.investment.constants.ErrorCode.*;
 import static com.fastcampus.investment.constants.InvestmentStatus.FAIL;
 import static com.fastcampus.investment.constants.InvestmentStatus.INVESTED;
-import static com.fastcampus.investment.dto.InvestmentResponse.*;
+import static com.fastcampus.investment.dto.response.InvestmentResponse.*;
 
 @Service
 @RequiredArgsConstructor

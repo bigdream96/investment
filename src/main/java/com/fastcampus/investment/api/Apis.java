@@ -1,9 +1,9 @@
 package com.fastcampus.investment.api;
 
 import com.fastcampus.investment.constants.InvestmentStatus;
-import com.fastcampus.investment.dto.InvestmentResponse;
+import com.fastcampus.investment.dto.response.InvestmentResponse;
 import com.fastcampus.investment.dto.Message;
-import com.fastcampus.investment.dto.ProductResponse;
+import com.fastcampus.investment.dto.response.ProductResponse;
 import com.fastcampus.investment.service.InvestmentService;
 import com.fastcampus.investment.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -29,15 +29,13 @@ public class Apis {
     @GetMapping("product")
     public ResponseEntity<Message<List<ProductResponse>>> inquireInvestableProducts() {
         List<ProductResponse> productResponses = productService.inquireInvestableProducts();
-        Message<List<ProductResponse>> message = Message.OK(productResponses);
-        return new ResponseEntity<>(message, OK);
+        return toResponse(productResponses);
     }
 
     @GetMapping("investment")
     public ResponseEntity<Message<List<InvestmentResponse>>> searchInvestment(@RequestHeader(value = USER_ID) @NotNull @Positive Long userId) {
         List<InvestmentResponse> investmentResponses = investmentService.searchInvestment(userId);
-        Message<List<InvestmentResponse>> message = Message.OK(investmentResponses);
-        return new ResponseEntity<>(message, OK);
+        return toResponse(investmentResponses);
     }
 
     @PostMapping("investment")
@@ -45,8 +43,7 @@ public class Apis {
                                                               @RequestParam @NotNull @Positive Long productId,
                                                               @RequestParam @PositiveOrZero Long investAmount) {
         InvestmentResponse investmentResponse = investmentService.invest(userId, productId, investAmount);
-        Message<InvestmentResponse> message = Message.OK(investmentResponse);
-        return new ResponseEntity<>(message, OK);
+        return toResponse(investmentResponse);
     }
 
     @PutMapping("investment/{productId}")
@@ -54,7 +51,10 @@ public class Apis {
                                                                               @PathVariable("productId") @NotNull @Positive Long productId,
                                                                               @RequestParam @NotNull InvestmentStatus status) {
         List<InvestmentResponse> investmentResponses = investmentService.updateInvestment(userId, productId, status);
-        Message<List<InvestmentResponse>> message = Message.OK(investmentResponses);
-        return new ResponseEntity<>(message, OK);
+        return toResponse(investmentResponses);
+    }
+
+    private static <T> ResponseEntity<Message<T>> toResponse(T data) {
+        return new ResponseEntity<>(Message.OK(data), OK);
     }
 }
