@@ -35,7 +35,7 @@ public class InvestmentService {
         return entityToResponseList(findInvestment);
     }
 
-    public InvestmentResponse invest(Long userId, Long productId, Long investAmount) {
+    public InvestmentResponse invest(Long userId, Long productId, Long investAmount) throws APIException {
         Product product = productRepository.findById(productId).orElseThrow(
                 () -> new APIException(NO_PRODUCT_DATA, "userId : " + userId, "productId : " + productId, "investAmount : " + investAmount)
         );
@@ -62,7 +62,7 @@ public class InvestmentService {
         return entityToResponse(findInvestment);
     }
 
-    public InvestmentResponse updateInvestment(Long userId, Long investmentId, InvestmentStatus status) {
+    public InvestmentResponse updateInvestment(Long userId, Long investmentId, InvestmentStatus status) throws APIException {
         Investment investment = investmentRepository.findById(investmentId).orElseThrow(() -> new APIException(NO_INVESTMENT_DATA, "investmentId : " + investmentId));
 
         if(!Objects.equals(investment.getUserId(), userId))
