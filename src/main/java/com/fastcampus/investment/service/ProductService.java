@@ -9,11 +9,12 @@ import com.fastcampus.investment.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static com.fastcampus.investment.constants.ErrorCode.NO_PRODUCT_DATA;
+import static com.fastcampus.investment.constants.InvestmentStatus.*;
 
 @Service
 @RequiredArgsConstructor
@@ -24,20 +25,16 @@ public class ProductService {
 
     public List<ProductResponse> inquireInvestableProducts() throws APIException {
         List<ProductResponse> result = new ArrayList<>();
-        List<Product> products = productRepository.findAll();
-        LocalDate curDate = LocalDate.now();
+        List<Product> products = productRepository.findCurrentDate();
 
         if(products.isEmpty())
             throw new APIException(NO_PRODUCT_DATA);
 
         for (Product product : products) {
-            if (product.getStartedAt().isBefore(curDate)
-                    && product.getFinishedAt().isAfter(curDate)) {
-                ProductResponse productResponse = ProductResponse.entityToResponse(product);
-                productResponse.setInvestedAmount(investmentRepository.findByProduct(product).stream().mapToLong(Investment::getInvestedAmount).sum());
-                productResponse.setInvestedCount(investmentRepository.countByProduct(product).orElse(0));
-                result.add(productResponse);
-            }
+            ProductResponse productResponse = ProductResponse.entityToResponse(product);
+            productResponse.setInvestedAmount(investmentRepository.findByProduct(product).stream().filter(investment -> Objects.equals(investment.getStatus(), INVESTED)).mapToLong(Investment::getInvestedAmount).sum());
+            productResponse.setInvestedCount(investmentRepository.countByProductAndStatus(product, INVESTED).orElse(0));
+            result.add(productResponse);
         }
 
         return result;

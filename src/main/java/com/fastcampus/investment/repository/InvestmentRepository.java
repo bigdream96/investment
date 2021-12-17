@@ -1,5 +1,6 @@
 package com.fastcampus.investment.repository;
 
+import com.fastcampus.investment.constants.InvestmentStatus;
 import com.fastcampus.investment.domain.Investment;
 import com.fastcampus.investment.domain.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -12,5 +13,5 @@ import java.util.Optional;
 public interface InvestmentRepository extends JpaRepository<Investment, Long> {
     List<Investment> findByProduct(Product product);
     List<Investment> findByUserId(Long userId);
-    Optional<Integer> countByProduct(Product product);
+    Optional<Integer> countByProductAndStatus(Product product, InvestmentStatus status);
 }

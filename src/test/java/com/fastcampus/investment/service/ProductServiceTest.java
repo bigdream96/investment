@@ -53,10 +53,9 @@ class ProductServiceTest {
                 .startedAt(staDate.plusDays(3))
                 .finishedAt(endDate.minusDays(3))
                 .build();
-        productList.add(oldProduct);
         productList.add(currentProduct);
 
-        when(productRepository.findAll()).thenReturn(productList);
+        when(productRepository.findCurrentDate()).thenReturn(productList);
     }
 
     @Test
