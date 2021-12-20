@@ -27,8 +27,8 @@ public class Apis {
     private final InvestmentService investmentService;
 
     @GetMapping("product")
-    public ResponseEntity<Message<List<ProductResponse>>> inquireInvestableProducts() {
-        List<ProductResponse> productResponses = productService.inquireInvestableProducts();
+    public ResponseEntity<Message<List<ProductResponse>>> searchInvestmentProductList() {
+        List<ProductResponse> productResponses = productService.searchInvestmentProductList();
         return toResponse(productResponses);
     }
 

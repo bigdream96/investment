@@ -23,7 +23,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final InvestmentRepository investmentRepository;
 
-    public List<ProductResponse> inquireInvestableProducts() throws APIException {
+    public List<ProductResponse> searchInvestmentProductList() throws APIException {
         List<Product> products = productRepository.findCurrentDate();
 
         if(products.isEmpty())

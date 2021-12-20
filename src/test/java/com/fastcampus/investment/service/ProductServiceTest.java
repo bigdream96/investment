@@ -60,8 +60,8 @@ class ProductServiceTest {
 
     @Test
     @DisplayName("투자 가능한 상품 조회(기간)")
-    void inquireInvestableProducts() {
-        List<ProductResponse> productList = productService.inquireInvestableProducts();
+    void searchInvestmentProductList() {
+        List<ProductResponse> productList = productService.searchInvestmentProductList();
 
         assertAll(
                 () -> assertEquals(1, productList.size()),
