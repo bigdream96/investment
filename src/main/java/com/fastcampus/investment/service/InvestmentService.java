@@ -18,6 +18,7 @@ import static com.fastcampus.investment.constants.ErrorCode.*;
 import static com.fastcampus.investment.constants.InvestmentStatus.FAIL;
 import static com.fastcampus.investment.constants.InvestmentStatus.INVESTED;
 import static com.fastcampus.investment.dto.response.InvestmentResponse.*;
+import static java.lang.String.*;
 
 @Service
 @RequiredArgsConstructor
@@ -30,25 +31,27 @@ public class InvestmentService {
         List<Investment> findInvestment = investmentRepository.findByUserId(userId);
 
         if(findInvestment.isEmpty())
-            throw new APIException(NO_INVESTMENT_DATA, "userId : " + userId);
+            throw new APIException(NO_INVESTMENT_DATA, format("userId : %d", userId));
 
         return entityToResponseList(findInvestment);
     }
 
     public InvestmentResponse invest(Long userId, Long productId, Long investAmount) throws APIException {
         Product product = productRepository.findById(productId).orElseThrow(
-                () -> new APIException(NO_PRODUCT_DATA, "userId : " + userId, "productId : " + productId, "investAmount : " + investAmount)
+                () -> new APIException(NO_PRODUCT_DATA, format("userId : %d, productId : %d, investAmount : %d", userId, productId, investAmount))
         );
 
         Long goalAmount = product.getTotalInvestingAmount();
-        Long totalInvested = investmentRepository.findByProduct(product).stream().mapToLong(Investment::getInvestedAmount).sum();
+        Long totalInvested = investmentRepository.findByProduct(product)
+                                            .stream()
+                                            .mapToLong(Investment::getInvestedAmount)
+                                            .sum();
         InvestmentStatus investmentStatus = INVESTED;
-        if (isNoTotalInvestment(totalInvested, goalAmount)) {
+
+        if (isNoTotalInvestment(totalInvested, goalAmount))
             investmentStatus = FAIL;
-        }
-        if (!isInvestmentPossible(investAmount, totalInvested, goalAmount)) {
+        if (!isInvestmentPossible(investAmount, totalInvested, goalAmount))
             investmentStatus = FAIL;
-        }
 
         Investment investment = Investment.builder()
                 .userId(userId)
@@ -63,10 +66,12 @@ public class InvestmentService {
     }
 
     public InvestmentResponse updateInvestment(Long userId, Long investmentId, InvestmentStatus status) throws APIException {
-        Investment investment = investmentRepository.findById(investmentId).orElseThrow(() -> new APIException(NO_INVESTMENT_DATA, "investmentId : " + investmentId));
+        Investment investment = investmentRepository.findById(investmentId).orElseThrow(
+                () -> new APIException(NO_INVESTMENT_DATA, format("investmentId : %d", investmentId))
+        );
 
         if(!Objects.equals(investment.getUserId(), userId))
-            throw new APIException(WRONG_INVESTMENT_REQUEST, "userId : " + userId);
+            throw new APIException(WRONG_INVESTMENT_REQUEST, format("userId : %d", userId));
 
         investment.changeStatus(status);
         investmentRepository.save(investment);

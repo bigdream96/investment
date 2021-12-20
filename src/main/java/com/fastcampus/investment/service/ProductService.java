@@ -24,19 +24,30 @@ public class ProductService {
     private final InvestmentRepository investmentRepository;
 
     public List<ProductResponse> inquireInvestableProducts() throws APIException {
-        List<ProductResponse> result = new ArrayList<>();
         List<Product> products = productRepository.findCurrentDate();
 
         if(products.isEmpty())
             throw new APIException(NO_PRODUCT_DATA);
 
+        List<ProductResponse> result = new ArrayList<>();
         for (Product product : products) {
             ProductResponse productResponse = ProductResponse.entityToResponse(product);
-            productResponse.setInvestedAmount(investmentRepository.findByProduct(product).stream().filter(investment -> Objects.equals(investment.getStatus(), INVESTED)).mapToLong(Investment::getInvestedAmount).sum());
-            productResponse.setInvestedCount(investmentRepository.countByProductAndStatus(product, INVESTED).orElse(0));
+            productResponse.setInvestedAmount(totalInvestedAmount(product));
+            productResponse.setInvestedCount(cntInvested(product));
             result.add(productResponse);
         }
 
         return result;
+    }
+
+    private Long totalInvestedAmount(Product product) {
+        return investmentRepository.findByProduct(product)
+                                .stream()
+                                .filter(investment -> Objects.equals(investment.getStatus(), INVESTED))
+                                .mapToLong(Investment::getInvestedAmount).sum();
+    }
+
+    private Integer cntInvested(Product product) {
+        return investmentRepository.countByProductAndStatus(product, INVESTED).orElse(0);
     }
 }
