@@ -40,7 +40,7 @@ public class InvestmentResponse {
                 .build();
     }
 
-    public static List<InvestmentResponse> entityToResponseList(List<Investment> investments) {
+    public static List<InvestmentResponse> entityToResponse(List<Investment> investments) {
         List<InvestmentResponse> investmentResponses = new ArrayList<>();
         for(Investment investment : investments) {
             InvestmentResponse investmentResponse = entityToResponse(investment);
