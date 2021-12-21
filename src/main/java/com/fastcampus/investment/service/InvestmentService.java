@@ -27,18 +27,14 @@ public class InvestmentService {
     private final ProductRepository productRepository;
     private final InvestmentRepository investmentRepository;
 
-    public List<InvestmentResponse> searchInvestment(Long userId) throws APIException {
-        List<Investment> findInvestment = investmentRepository.findByUserId(userId);
-
-        if(findInvestment.isEmpty())
-            throw new APIException(NO_INVESTMENT_DATA, format("userId : %d", userId));
-
-        return entityToResponseList(findInvestment);
+    public List<InvestmentResponse> searchInvestment(Long userId) {
+        List<Investment> investments = investmentRepository.findByUserId(userId);
+        return entityToResponse(investments);
     }
 
     public InvestmentResponse invest(Long userId, Long productId, Long investAmount) throws APIException {
         Product product = productRepository.findById(productId).orElseThrow(
-                () -> new APIException(NO_PRODUCT_DATA, format("userId : %d, productId : %d, investAmount : %d", userId, productId, investAmount))
+                () -> new APIException(NO_PRODUCT_DATA, format("productId : %d", productId))
         );
 
         Long goalAmount = product.getTotalInvestingAmount();
@@ -71,7 +67,7 @@ public class InvestmentService {
         );
 
         if(!Objects.equals(investment.getUserId(), userId))
-            throw new APIException(WRONG_INVESTMENT_REQUEST, format("userId : %d", userId));
+            throw new APIException(NOT_MATCH_USER_ID_IN_INVESTMENT, format("userId : %d", userId));
 
         investment.changeStatus(status);
         investmentRepository.save(investment);
