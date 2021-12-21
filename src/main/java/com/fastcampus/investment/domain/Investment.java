@@ -18,14 +18,16 @@ public class Investment {
     @GeneratedValue
     private Long id;
 
+    @Column(nullable = false)
     private Long userId;
 
+    @Column(nullable = false)
     private Long investedAmount;
 
     @Column(nullable = false)
     private InvestmentStatus status;
 
-    @Column(nullable = false)
+    @Column(updatable = false, nullable = false)
     private LocalDate investedAt;
 
     @ManyToOne(cascade = CascadeType.ALL)
