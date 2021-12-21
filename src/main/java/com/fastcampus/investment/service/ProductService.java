@@ -1,9 +1,7 @@
 package com.fastcampus.investment.service;
 
-import com.fastcampus.investment.domain.Investment;
 import com.fastcampus.investment.domain.Product;
 import com.fastcampus.investment.dto.response.ProductResponse;
-import com.fastcampus.investment.exception.APIException;
 import com.fastcampus.investment.repository.InvestmentRepository;
 import com.fastcampus.investment.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,9 +9,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-import static com.fastcampus.investment.constants.ErrorCode.NO_PRODUCT_DATA;
 import static com.fastcampus.investment.constants.InvestmentStatus.*;
 
 @Service
@@ -29,7 +25,7 @@ public class ProductService {
         List<ProductResponse> result = new ArrayList<>();
         for (Product product : products) {
             ProductResponse productResponse = ProductResponse.entityToResponse(product);
-            productResponse.setInvestedAmount(totalInvestedAmount(product));
+            productResponse.setInvestedAmount(sumInvestedAmount(product));
             productResponse.setInvestedCount(cntInvested(product));
             result.add(productResponse);
         }
@@ -37,14 +33,11 @@ public class ProductService {
         return result;
     }
 
-    private Long totalInvestedAmount(Product product) {
-        return investmentRepository.findByProduct(product)
-                                .stream()
-                                .filter(investment -> Objects.equals(investment.getStatus(), INVESTED))
-                                .mapToLong(Investment::getInvestedAmount).sum();
+    private Integer cntInvested(Product product) {
+        return investmentRepository.countByProductAndStatus(product, INVESTED);
     }
 
-    private Integer cntInvested(Product product) {
-        return investmentRepository.countByProductAndStatus(product, INVESTED).orElse(0);
+    private Long sumInvestedAmount(Product product) {
+        return investmentRepository.sumInvestedAmount(product);
     }
 }

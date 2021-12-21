@@ -38,10 +38,7 @@ public class InvestmentService {
         );
 
         Long goalAmount = product.getTotalInvestingAmount();
-        Long totalInvested = investmentRepository.findByProduct(product)
-                                            .stream()
-                                            .mapToLong(Investment::getInvestedAmount)
-                                            .sum();
+        Long totalInvested = investmentRepository.sumInvestedAmount(product);
         InvestmentStatus investmentStatus = INVESTED;
 
         if (isNoTotalInvestment(totalInvested, goalAmount))
@@ -56,9 +53,9 @@ public class InvestmentService {
                 .status(investmentStatus)
                 .investedAt(LocalDate.now())
                 .build();
-        Investment findInvestment = investmentRepository.save(investment);
+        Investment saveInvestment = investmentRepository.save(investment);
 
-        return entityToResponse(findInvestment);
+        return entityToResponse(saveInvestment);
     }
 
     public InvestmentResponse updateInvestment(Long userId, Long investmentId, InvestmentStatus status) throws APIException {
@@ -70,9 +67,9 @@ public class InvestmentService {
             throw new APIException(NOT_MATCH_USER_ID_IN_INVESTMENT, format("userId : %d", userId));
 
         investment.changeStatus(status);
-        investmentRepository.save(investment);
+        Investment updateInvestment = investmentRepository.save(investment);
 
-        return entityToResponse(investment);
+        return entityToResponse(updateInvestment);
     }
 
     private boolean isNoTotalInvestment(Long total, Long goalAmount) {
