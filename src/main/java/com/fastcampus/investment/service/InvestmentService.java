@@ -46,7 +46,7 @@ public class InvestmentService {
 
         if (isNoTotalInvestment(totalInvested, goalAmount))
             investmentStatus = FAIL;
-        if (!isInvestmentPossible(investAmount, totalInvested, goalAmount))
+        if (isInvestmentImpossible(investAmount, goalAmount, totalInvested))
             investmentStatus = FAIL;
 
         Investment investment = Investment.builder()
@@ -79,8 +79,8 @@ public class InvestmentService {
         return total >= goalAmount;
     }
 
-    private boolean isInvestmentPossible(Long investmentAmount, Long totalInvested, Long goalAmount) {
-        return investmentAmount <= (goalAmount - totalInvested);
+    private boolean isInvestmentImpossible(Long investmentAmount, Long goalAmount, Long totalInvested) {
+        return investmentAmount >= (goalAmount - totalInvested);
     }
 
 }
