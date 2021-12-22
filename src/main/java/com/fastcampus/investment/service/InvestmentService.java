@@ -63,7 +63,7 @@ public class InvestmentService {
                 () -> new APIException(NO_INVESTMENT_DATA, format("investmentId : %d", investmentId))
         );
 
-        if(!Objects.equals(investment.getUserId(), userId))
+        if (!Objects.equals(investment.getUserId(), userId))
             throw new APIException(NOT_MATCH_USER_ID_IN_INVESTMENT, format("userId : %d", userId));
 
         investment.changeStatus(status);

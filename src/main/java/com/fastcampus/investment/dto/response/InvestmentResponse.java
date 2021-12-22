@@ -42,7 +42,7 @@ public class InvestmentResponse {
 
     public static List<InvestmentResponse> entityToResponse(List<Investment> investments) {
         List<InvestmentResponse> investmentResponses = new ArrayList<>();
-        for(Investment investment : investments) {
+        for (Investment investment : investments) {
             InvestmentResponse investmentResponse = entityToResponse(investment);
             investmentResponses.add(investmentResponse);
         }

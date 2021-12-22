@@ -33,11 +33,11 @@ public class ProductService {
         return result;
     }
 
-    private Integer cntInvested(Product product) {
-        return investmentRepository.countByProductAndStatus(product, INVESTED);
-    }
-
     private Long sumInvestedAmount(Product product) {
         return investmentRepository.sumInvestedAmount(product);
+    }
+
+    private Integer cntInvested(Product product) {
+        return investmentRepository.countByProductAndStatus(product, INVESTED);
     }
 }

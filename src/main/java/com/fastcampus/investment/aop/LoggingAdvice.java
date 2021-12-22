@@ -26,7 +26,7 @@ public class LoggingAdvice {
     @AfterReturning(pointcut = "com.fastcampus.investment.aop.InvestmentPointcut.apiPointcut()", returning = "returnObj")
     public void afterControllerLog(JoinPoint jp, Object returnObj) {
         String method = jp.getSignature().getName();
-        if(returnObj != null)
+        if (returnObj != null)
             log.debug(format("[ API ] %s () 리턴값 : %s", method, returnObj));
     }
 
@@ -40,7 +40,7 @@ public class LoggingAdvice {
     @AfterReturning(pointcut = "com.fastcampus.investment.aop.InvestmentPointcut.servicePointcut()", returning = "returnObj")
     public void afterServiceLog(JoinPoint jp, Object returnObj) {
         String method = jp.getSignature().getName();
-        if(returnObj != null)
+        if (returnObj != null)
             log.debug(format("[ 서비스 ] %s () 리턴값 : %s", method, returnObj));
     }
 
@@ -54,7 +54,7 @@ public class LoggingAdvice {
     @AfterReturning(pointcut = "com.fastcampus.investment.aop.InvestmentPointcut.repositoryPointcut()", returning = "returnObj")
     public void afterRepositoryLog(JoinPoint jp, Object returnObj) {
         String method = jp.getSignature().getName();
-        if(returnObj != null)
+        if (returnObj != null)
             log.debug(format("[ 레파지토리 ] %s () 리턴값 : %s", method, returnObj));
     }
 }
