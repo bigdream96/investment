@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -35,7 +36,7 @@ class InvestmentTest {
                 .product(product)
                 .status(INVESTED)
                 .investedAmount(10000L)
-                .investedAt(LocalDate.now())
+                .investedAt(LocalDateTime.now())
                 .build();
 
         Investment saveInvestment = investmentRepository.save(investment);
@@ -57,13 +58,13 @@ class InvestmentTest {
                 .product(product)
                 .status(INVESTED)
                 .investedAmount(5000L)
-                .investedAt(LocalDate.now())
+                .investedAt(LocalDateTime.now())
                 .build();
         Investment investment2 = Investment.builder()
                 .product(product)
                 .status(INVESTED)
                 .investedAmount(5000L)
-                .investedAt(LocalDate.now())
+                .investedAt(LocalDateTime.now())
                 .build();
         investmentList.add(investment1);
         investmentList.add(investment2);
@@ -87,7 +88,7 @@ class InvestmentTest {
                 .product(product)
                 .status(INVESTED)
                 .investedAmount(10000L)
-                .investedAt(LocalDate.now())
+                .investedAt(LocalDateTime.now())
                 .build();
 
         investmentRepository.save(investment);
@@ -110,7 +111,7 @@ class InvestmentTest {
                 .product(product)
                 .status(status)
                 .investedAmount(10000L)
-                .investedAt(LocalDate.now())
+                .investedAt(LocalDateTime.now())
                 .build();
 
         Investment saveInvestment = investmentRepository.save(investment);

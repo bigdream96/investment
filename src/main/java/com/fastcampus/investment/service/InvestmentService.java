@@ -10,7 +10,7 @@ import com.fastcampus.investment.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Objects;
 
@@ -28,7 +28,7 @@ public class InvestmentService {
     private final InvestmentRepository investmentRepository;
 
     public List<InvestmentResponse> searchInvestment(Long userId) {
-        List<Investment> investments = investmentRepository.findByUserId(userId);
+        List<Investment> investments = investmentRepository.findByUserIdOrderByInvestedAtDesc(userId);
         return entityToResponse(investments);
     }
 
@@ -51,7 +51,7 @@ public class InvestmentService {
                 .product(product)
                 .investedAmount(investAmount)
                 .status(investmentStatus)
-                .investedAt(LocalDate.now())
+                .investedAt(LocalDateTime.now())
                 .build();
         Investment saveInvestment = investmentRepository.save(investment);
 

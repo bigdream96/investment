@@ -4,7 +4,7 @@ import com.fastcampus.investment.constants.InvestmentStatus;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "INVESTMENTS")
@@ -28,7 +28,7 @@ public class Investment {
     private InvestmentStatus status;
 
     @Column(updatable = false, nullable = false)
-    private LocalDate investedAt;
+    private LocalDateTime investedAt;
 
     @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "PRODUCTS_ID")

@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -47,7 +48,7 @@ class InvestmentServiceTest {
                 .productResponse(ProductResponse.entityToResponse(product))
                 .investedAmount(investAmount)
                 .status(INVESTED)
-                .investedAt(LocalDate.now())
+                .investedAt(LocalDateTime.now())
                 .build();
 
         when(investmentService.invest(userId, product.getId(), investAmount)).thenReturn(expectedResponse);
@@ -72,7 +73,7 @@ class InvestmentServiceTest {
                 .productResponse(ProductResponse.entityToResponse(product))
                 .investedAmount(investAmount)
                 .status(INVESTED)
-                .investedAt(LocalDate.now())
+                .investedAt(LocalDateTime.now())
                 .build();
         expectedResponses.add(expectedResponse);
 
@@ -97,7 +98,7 @@ class InvestmentServiceTest {
                 .productResponse(ProductResponse.entityToResponse(product))
                 .investedAmount(investAmount)
                 .status(CANCELED)
-                .investedAt(LocalDate.now())
+                .investedAt(LocalDateTime.now())
                 .build();
 
         when(investmentService.updateInvestment(userId, product.getId(), CANCELED)).thenReturn(expectedResponse);
