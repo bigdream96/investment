@@ -1,23 +1,23 @@
-DROP TABLE IF EXISTS investments CASCADE;
-DROP TABLE IF EXISTS products CASCADE;
+DROP TABLE IF EXISTS INVESTMENTS CASCADE;
+DROP TABLE IF EXISTS PRODUCTS CASCADE;
 
-CREATE TABLE products
+CREATE TABLE PRODUCTS
 (
-    id                     bigint       NOT NULL AUTO_INCREMENT, --id
-    title                  varchar(100) NOT NULL,                --상품명
-    total_investing_amount bigint       NOT NULL,                --총 투자 모집금액
-    started_at             datetime     NOT NULL,                --투자시작일시
-    finished_at            datetime     NOT NULL,                --투자종료일시
-    PRIMARY KEY (id)
+    ID                     BIGINT       NOT NULL AUTO_INCREMENT, --ID
+    TITLE                  VARCHAR(100) NOT NULL,                --상품명
+    TOTAL_INVESTING_AMOUNT BIGINT       NOT NULL,                --총 투자 모집금액
+    STARTED_AT             DATETIME     NOT NULL,                --투자시작일시
+    FINISHED_AT            DATETIME     NOT NULL,                --투자종료일시
+    PRIMARY KEY (ID)
 );
 
-CREATE TABLE investments
+CREATE TABLE INVESTMENTS
 (
-    id                     bigint auto_increment primary key,   --id
-    user_id                bigint,
-    products_id            bigint,                              --상품id
-    invested_amount        bigint,                              --투자금액
-    status                 varchar(20)  not null,               --투자상태
-    invested_at            datetime     not null,               --투자일시
-    foreign key (products_id) references products(id)
+    ID                     BIGINT AUTO_INCREMENT PRIMARY KEY,   --ID
+    USER_ID                BIGINT,
+    PRODUCTS_ID            BIGINT,                              --상품ID
+    INVESTED_AMOUNT        BIGINT,                              --투자금액
+    STATUS                 VARCHAR(20)  NOT NULL,               --투자상태
+    INVESTED_AT            DATETIME     NOT NULL,               --투자일시
+    FOREIGN KEY (PRODUCTS_ID) REFERENCES PRODUCTS(ID)
 );
