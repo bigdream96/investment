@@ -14,7 +14,6 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -45,8 +44,8 @@ class InvestmentServiceTest {
                 .id(1L)
                 .title("TOBE-RICH of Warren Buffett")
                 .totalInvestingAmount(100000000L)
-                .startedAt(LocalDate.now().minusDays(3))
-                .finishedAt(LocalDate.now().plusDays(3))
+                .startedAt(LocalDate.of(2021, 1, 1).minusDays(3))
+                .finishedAt(LocalDate.of(2021, 12, 31).plusDays(3))
                 .build();
     }
 
@@ -77,7 +76,6 @@ class InvestmentServiceTest {
         Investment investment = Investment.builder()
                 .product(product)
                 .userId(userId)
-                .investedAt(LocalDateTime.now())
                 .investedAmount(investAmount)
                 .status(INVESTED)
                 .build();
@@ -103,7 +101,6 @@ class InvestmentServiceTest {
         Investment investment = Investment.builder()
                 .product(product)
                 .userId(userId)
-                .investedAt(LocalDateTime.now())
                 .status(CANCELED)
                 .build();
 
