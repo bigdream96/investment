@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -40,5 +41,16 @@ class ProductTest {
         Optional<Product> findProduct = productRepository.findById(productId);
 
         assertEquals(productId, findProduct.orElse(Product.builder().build()).getId());
+    }
+
+    @Test
+    @DisplayName("모집기간 내 투자상품조회")
+    void testFindCurrentDate() {
+        List<Product> products = productRepository.findCurrentDate();
+
+        products.forEach(product -> assertAll(
+                () -> assertTrue(product.getStartedAt().isBefore(LocalDate.now())),
+                () -> assertTrue(product.getFinishedAt().isAfter(LocalDate.now()))
+        ));
     }
 }
