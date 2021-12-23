@@ -25,12 +25,13 @@ public class Investment {
     private Long investedAmount;
 
     @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
     private InvestmentStatus status;
 
     @Column(updatable = false, nullable = false)
     private LocalDateTime investedAt;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.REMOVE)
     @JoinColumn(name = "PRODUCTS_ID")
     private Product product;
 
