@@ -15,6 +15,7 @@ import java.util.List;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode
 public class InvestmentResponse {
 
     private Long id;

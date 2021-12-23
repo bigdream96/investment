@@ -4,7 +4,6 @@ import com.fastcampus.investment.domain.Product;
 import com.fastcampus.investment.dto.response.ProductResponse;
 import com.fastcampus.investment.repository.InvestmentRepository;
 import com.fastcampus.investment.repository.ProductRepository;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -16,6 +15,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.fastcampus.investment.constants.InvestmentStatus.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
@@ -30,43 +30,32 @@ class ProductServiceTest {
     @InjectMocks
     private ProductService productService;
 
-    private Product oldProduct;
-    private Product currentProduct;
-
-    @BeforeEach
-    void init() {
-        List<Product> productList = new ArrayList<>();
+    @Test
+    @DisplayName("투자 가능한 상품 조회(기간)")
+    void searchInvestmentProductList() {
+        List<Product> expectedProductList = new ArrayList<>();
         LocalDate staDate = LocalDate.of(2021, 1, 1);
         LocalDate endDate = LocalDate.of(2021, 12, 31);
-
-        oldProduct = Product.builder()
+        Product product = Product.builder()
                 .id(1L)
-                .title("You can be elon musk")
-                .totalInvestingAmount(100_000_000L)
-                .startedAt(staDate.minusDays(6))
-                .finishedAt(staDate.minusDays(3))
-                .build();
-        currentProduct = Product.builder()
-                .id(2L)
                 .title("TOBE-RICH of Warren Buffett")
                 .totalInvestingAmount(600_000_000L)
                 .startedAt(staDate.plusDays(3))
                 .finishedAt(endDate.minusDays(3))
                 .build();
-        productList.add(currentProduct);
+        expectedProductList.add(product);
 
-        when(productRepository.findCurrentDate()).thenReturn(productList);
-    }
+        when(productRepository.findCurrentDate()).thenReturn(expectedProductList);
+        when(investmentRepository.sumInvestedAmount(product)).thenReturn(0L);
+        when(investmentRepository.countByProductAndStatus(product, INVESTED)).thenReturn(0);
 
-    @Test
-    @DisplayName("투자 가능한 상품 조회(기간)")
-    void searchInvestmentProductList() {
-        List<ProductResponse> productList = productService.searchInvestmentProductList();
+        List<ProductResponse> productResponses = productService.searchInvestmentProductList();
 
         assertAll(
-                () -> assertEquals(1, productList.size()),
-                () -> assertEquals(currentProduct.getId(), productList.get(0).getId()),
-                () -> assertNotEquals(oldProduct.getId(), productList.get(0).getId())
+                () -> assertEquals(1, productResponses.size()),
+                () -> assertEquals(product.getId(), productResponses.get(0).getId()),
+                () -> assertEquals(0L, productResponses.get(0).getInvestedAmount()),
+                () -> assertEquals(0, productResponses.get(0).getInvestedCount())
         );
     }
 }

@@ -1,28 +1,40 @@
 package com.fastcampus.investment.service;
 
+import com.fastcampus.investment.domain.Investment;
 import com.fastcampus.investment.domain.Product;
 import com.fastcampus.investment.dto.response.InvestmentResponse;
-import com.fastcampus.investment.dto.response.ProductResponse;
+import com.fastcampus.investment.repository.InvestmentRepository;
+import com.fastcampus.investment.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static com.fastcampus.investment.constants.InvestmentStatus.CANCELED;
 import static com.fastcampus.investment.constants.InvestmentStatus.INVESTED;
+import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.mockito.AdditionalAnswers.returnsFirstArg;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 class InvestmentServiceTest {
     @Mock
+    private InvestmentRepository investmentRepository;
+
+    @Mock
+    private ProductRepository productRepository;
+
+    @InjectMocks
     private InvestmentService investmentService;
 
     private Product product;
@@ -44,71 +56,66 @@ class InvestmentServiceTest {
         Long userId = 1L;
         Long investAmount = 10000L;
 
-        InvestmentResponse expectedResponse = InvestmentResponse.builder()
-                .productResponse(ProductResponse.entityToResponse(product))
-                .investedAmount(investAmount)
-                .status(INVESTED)
-                .investedAt(LocalDateTime.now())
-                .build();
-
-        when(investmentService.invest(userId, product.getId(), investAmount)).thenReturn(expectedResponse);
+        when(productRepository.findById(1L)).thenReturn(Optional.of(product));
+        when(investmentRepository.save(any(Investment.class))).then(returnsFirstArg());
 
         InvestmentResponse response = investmentService.invest(userId, product.getId(), investAmount);
 
-        assertEquals(expectedResponse.getId(), response.getId());
-        assertEquals(expectedResponse.getUserId(), response.getUserId());
-        assertEquals(expectedResponse.getStatus(), response.getStatus());
-        assertEquals(expectedResponse.getInvestedAmount(), response.getInvestedAmount());
-        assertEquals(expectedResponse.getInvestedAt(), response.getInvestedAt());
+        assertAll(
+                () -> assertEquals(userId, response.getUserId()),
+                () -> assertEquals(product.getId(), response.getProductResponse().getId()),
+                () -> assertEquals(INVESTED, response.getStatus())
+        );
+
     }
 
     @Test
     @DisplayName("투자조회")
-    void search() {
+    void searchInvestment() {
         Long userId = 1L;
         Long investAmount = 10000L;
-
-        List<InvestmentResponse> expectedResponses = new ArrayList<>();
-        InvestmentResponse expectedResponse = InvestmentResponse.builder()
-                .productResponse(ProductResponse.entityToResponse(product))
+        Investment investment = Investment.builder()
+                .product(product)
+                .userId(userId)
+                .investedAt(LocalDateTime.now())
                 .investedAmount(investAmount)
                 .status(INVESTED)
-                .investedAt(LocalDateTime.now())
                 .build();
-        expectedResponses.add(expectedResponse);
+        List<Investment> expectedInvestments = List.of(investment);
 
-        when(investmentService.searchInvestment(userId)).thenReturn(expectedResponses);
+        when(investmentRepository.findByUserIdOrderByInvestedAtDesc(userId)).thenReturn(expectedInvestments);
 
         List<InvestmentResponse> responses = investmentService.searchInvestment(userId);
 
-        assertEquals(expectedResponses.get(0).getId(), responses.get(0).getId());
-        assertEquals(expectedResponses.get(0).getUserId(), responses.get(0).getUserId());
-        assertEquals(expectedResponses.get(0).getStatus(), responses.get(0).getStatus());
-        assertEquals(expectedResponses.get(0).getInvestedAmount(), responses.get(0).getInvestedAmount());
-        assertEquals(expectedResponses.get(0).getInvestedAt(), responses.get(0).getInvestedAt());
+        assertAll(
+                () -> assertEquals(expectedInvestments.size(), responses.size()),
+                () -> assertEquals(userId, responses.get(0).getUserId()),
+                () -> assertEquals(product.getId(), responses.get(0).getProductResponse().getId()),
+                () -> assertEquals(INVESTED, responses.get(0).getStatus())
+        );
     }
 
     @Test
     @DisplayName("투자취소")
-    void cancel() {
+    void cancelInvestment() {
+        Long id = 1L;
         Long userId = 1L;
-        Long investAmount = 10000L;
-
-        InvestmentResponse expectedResponse = InvestmentResponse.builder()
-                .productResponse(ProductResponse.entityToResponse(product))
-                .investedAmount(investAmount)
-                .status(CANCELED)
+        Investment investment = Investment.builder()
+                .product(product)
+                .userId(userId)
                 .investedAt(LocalDateTime.now())
+                .status(CANCELED)
                 .build();
 
-        when(investmentService.updateInvestment(userId, product.getId(), CANCELED)).thenReturn(expectedResponse);
+        when(investmentRepository.findById(id)).thenReturn(Optional.of(investment));
+        when(investmentRepository.save(any(Investment.class))).then(returnsFirstArg());
 
         InvestmentResponse response = investmentService.updateInvestment(userId, product.getId(), CANCELED);
 
-        assertEquals(expectedResponse.getId(), response.getId());
-        assertEquals(expectedResponse.getUserId(), response.getUserId());
-        assertEquals(expectedResponse.getStatus(), response.getStatus());
-        assertEquals(expectedResponse.getInvestedAmount(), response.getInvestedAmount());
-        assertEquals(expectedResponse.getInvestedAt(), response.getInvestedAt());
+        assertAll(
+                () -> assertEquals(userId, response.getUserId()),
+                () -> assertEquals(product.getId(), response.getProductResponse().getId()),
+                () -> assertEquals(CANCELED, response.getStatus())
+        );
     }
 }
