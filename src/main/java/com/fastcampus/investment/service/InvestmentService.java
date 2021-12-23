@@ -37,14 +37,7 @@ public class InvestmentService {
                 () -> new APIException(NO_PRODUCT_DATA, format("productId : %d", productId))
         );
 
-        Long goalAmount = product.getTotalInvestingAmount();
-        Long totalInvested = investmentRepository.sumInvestedAmount(product);
-        InvestmentStatus investmentStatus = INVESTED;
-
-        if (isNoTotalInvestment(totalInvested, goalAmount))
-            investmentStatus = FAIL;
-        if (isInvestmentImpossible(investAmount, goalAmount, totalInvested))
-            investmentStatus = FAIL;
+        InvestmentStatus investmentStatus = isValidInvestment(product, investAmount) ? INVESTED : FAIL;
 
         Investment investment = Investment.builder()
                 .userId(userId)
@@ -72,12 +65,10 @@ public class InvestmentService {
         return entityToResponse(updateInvestment);
     }
 
-    private boolean isNoTotalInvestment(Long total, Long goalAmount) {
-        return total >= goalAmount;
-    }
-
-    private boolean isInvestmentImpossible(Long investmentAmount, Long goalAmount, Long totalInvested) {
-        return investmentAmount >= (goalAmount - totalInvested);
+    private boolean isValidInvestment(Product product, Long investAmount) {
+        Long goalAmount = product.getTotalInvestingAmount();
+        Long totalInvested = investmentRepository.sumInvestedAmount(product);
+        return investAmount <= (goalAmount - totalInvested);
     }
 
 }
