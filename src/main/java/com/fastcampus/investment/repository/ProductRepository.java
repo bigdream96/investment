@@ -9,6 +9,8 @@ import java.util.List;
 
 @Repository
 public interface ProductRepository extends JpaRepository<Product, Long> {
+
     @Query("SELECT p FROM Product p WHERE current_date BETWEEN p.startedAt AND p.finishedAt")
     List<Product> findCurrentDate();
+
 }

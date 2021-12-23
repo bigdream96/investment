@@ -19,9 +19,9 @@ class ProductTest {
 
     @Test
     @DisplayName("신규 투자상품 등록")
-    void save() {
+    void testSave() {
         Product product = Product.builder()
-                .title("You can be elon musk")
+                .title("test")
                 .totalInvestingAmount(10000L)
                 .startedAt(LocalDate.now())
                 .finishedAt(LocalDate.now())
@@ -34,19 +34,11 @@ class ProductTest {
 
     @Test
     @DisplayName("상품ID로 투자상품 조회")
-    void findById() {
-        Product product = Product.builder()
-                .title("You can be elon musk")
-                .totalInvestingAmount(10000L)
-                .startedAt(LocalDate.now())
-                .finishedAt(LocalDate.now())
-                .build();
+    void testFindById() {
+        Long productId = 1L;
 
-        productRepository.save(product);
-        Optional<Product> findProduct = productRepository.findById(product.getId());
+        Optional<Product> findProduct = productRepository.findById(productId);
 
-        assertEquals(product, findProduct.orElse(Product.builder().build()));
+        assertEquals(productId, findProduct.orElse(Product.builder().build()).getId());
     }
-
-
 }
