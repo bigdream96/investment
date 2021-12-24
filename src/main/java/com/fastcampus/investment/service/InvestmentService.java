@@ -4,7 +4,7 @@ import com.fastcampus.investment.constants.InvestmentStatus;
 import com.fastcampus.investment.domain.Investment;
 import com.fastcampus.investment.domain.Product;
 import com.fastcampus.investment.dto.response.InvestmentResponse;
-import com.fastcampus.investment.exception.APIException;
+import com.fastcampus.investment.exception.InvestmentException;
 import com.fastcampus.investment.repository.InvestmentRepository;
 import com.fastcampus.investment.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -32,9 +32,9 @@ public class InvestmentService {
         return entityToResponse(investments);
     }
 
-    public InvestmentResponse invest(Long userId, Long productId, Long investAmount) throws APIException {
+    public InvestmentResponse invest(Long userId, Long productId, Long investAmount) throws InvestmentException {
         Product product = productRepository.findById(productId).orElseThrow(
-                () -> new APIException(NO_PRODUCT_DATA, format("productId : %d", productId))
+                () -> new InvestmentException(NO_PRODUCT_DATA, format("productId : %d", productId))
         );
 
         InvestmentStatus investmentStatus = isValidInvestment(product, investAmount) ? INVESTED : FAIL;
@@ -51,13 +51,13 @@ public class InvestmentService {
         return entityToResponse(saveInvestment);
     }
 
-    public InvestmentResponse updateInvestment(Long userId, Long investmentId, InvestmentStatus status) throws APIException {
+    public InvestmentResponse updateInvestment(Long userId, Long investmentId, InvestmentStatus status) throws InvestmentException {
         Investment investment = investmentRepository.findById(investmentId).orElseThrow(
-                () -> new APIException(NO_INVESTMENT_DATA, format("investmentId : %d", investmentId))
+                () -> new InvestmentException(NO_INVESTMENT_DATA, format("investmentId : %d", investmentId))
         );
 
         if (!Objects.equals(investment.getUserId(), userId))
-            throw new APIException(NOT_MATCH_USER_ID_IN_INVESTMENT, format("userId : %d", userId));
+            throw new InvestmentException(NOT_MATCH_USER_ID_IN_INVESTMENT, format("userId : %d", userId));
 
         investment.changeStatus(status);
         Investment updateInvestment = investmentRepository.save(investment);

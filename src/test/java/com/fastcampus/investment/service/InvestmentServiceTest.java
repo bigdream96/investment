@@ -3,7 +3,7 @@ package com.fastcampus.investment.service;
 import com.fastcampus.investment.domain.Investment;
 import com.fastcampus.investment.domain.Product;
 import com.fastcampus.investment.dto.response.InvestmentResponse;
-import com.fastcampus.investment.exception.APIException;
+import com.fastcampus.investment.exception.InvestmentException;
 import com.fastcampus.investment.repository.InvestmentRepository;
 import com.fastcampus.investment.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -74,9 +74,9 @@ class InvestmentServiceTest {
         Long userId = 1L;
         Long investAmount = 10000L;
 
-        when(productRepository.findById(product.getId())).thenThrow(new APIException(NO_PRODUCT_DATA));
+        when(productRepository.findById(product.getId())).thenThrow(new InvestmentException(NO_PRODUCT_DATA));
 
-        assertThrows(APIException.class, () -> investmentService.invest(userId, product.getId(), investAmount));
+        assertThrows(InvestmentException.class, () -> investmentService.invest(userId, product.getId(), investAmount));
     }
 
     @Test
@@ -149,9 +149,9 @@ class InvestmentServiceTest {
         Long userId = 1L;
         Long investmentId = 999L;
 
-        when(investmentRepository.findById(investmentId)).thenThrow(new APIException(NO_INVESTMENT_DATA));
+        when(investmentRepository.findById(investmentId)).thenThrow(new InvestmentException(NO_INVESTMENT_DATA));
 
-        assertThrows(APIException.class, () -> investmentService.updateInvestment(userId, investmentId, CANCELED));
+        assertThrows(InvestmentException.class, () -> investmentService.updateInvestment(userId, investmentId, CANCELED));
     }
 
     @Test
@@ -167,6 +167,6 @@ class InvestmentServiceTest {
 
         when(investmentRepository.findById(investmentId)).thenReturn(Optional.of(investment));
 
-        assertThrows(APIException.class, () -> investmentService.updateInvestment(2L, investmentId, CANCELED));
+        assertThrows(InvestmentException.class, () -> investmentService.updateInvestment(2L, investmentId, CANCELED));
     }
 }

@@ -6,18 +6,18 @@ import lombok.Getter;
 import java.util.Arrays;
 
 @Getter
-public class APIException extends RuntimeException {
+public class InvestmentException extends RuntimeException {
 
     private final ErrorCode errorCode;
     private final String data;
 
-    public APIException(ErrorCode errorCode) {
+    public InvestmentException(ErrorCode errorCode) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
         this.data = "";
     }
 
-    public APIException(ErrorCode errorCode, String... data) {
+    public InvestmentException(ErrorCode errorCode, String... data) {
         super(errorCode.getMessage());
         this.errorCode = errorCode;
         this.data = Arrays.toString(data);

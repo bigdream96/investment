@@ -29,18 +29,18 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(Message.ERROR(e.getMessage()), INTERNAL_SERVER_ERROR);
     }
 
-    @ExceptionHandler(value = APIException.class)
-    protected ResponseEntity<Message<String>> handleAPIException(APIException ae) {
+    @ExceptionHandler(value = InvestmentException.class)
+    protected ResponseEntity<Message<String>> handleAPIException(InvestmentException e) {
         HttpStatus httpStatus;
-        ErrorCode errorCode = ae.getErrorCode();
+        ErrorCode errorCode = e.getErrorCode();
 
         if (errorCode == NO_INVESTMENT_DATA || errorCode == NO_PRODUCT_DATA)
             httpStatus = NOT_FOUND;
         else
             httpStatus = BAD_REQUEST;
 
-        Message<String> message = Message.ERROR(ae.getMessage(), ae.getData());
-        log.warn(format("[ 예외발생 ] %s, data=%s,", ae.getMessage(), ae.getData()));
+        Message<String> message = Message.ERROR(e.getMessage(), e.getData());
+        log.warn(format("[ 예외발생 ] %s, data=%s,", e.getMessage(), e.getData()));
         return new ResponseEntity<>(message, httpStatus);
     }
 
