@@ -23,7 +23,7 @@ public class Message<T> {
 
     // DATA OK
     public static <T> Message<T> ok(T data) {
-        return (Message<T>)Message.builder()
+        return Message.<T>builder()
                 .isSuccess(true)
                 .description("Success!!!")
                 .data(data)
@@ -32,7 +32,7 @@ public class Message<T> {
 
     // ERROR
     public static <T> Message<T> error(String description) {
-        return (Message<T>)Message.builder()
+        return Message.<T>builder()
                 .isSuccess(false)
                 .description(description)
                 .build();
