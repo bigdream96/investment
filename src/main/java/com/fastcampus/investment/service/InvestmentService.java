@@ -36,7 +36,7 @@ public class InvestmentService {
                 () -> new InvestmentException(NO_PRODUCT_DATA, format("productId : %d", productId))
         );
 
-        InvestmentStatus investmentStatus = isValidInvestment(product, investAmount) ? INVESTED : FAIL;
+        InvestmentStatus investmentStatus = checkInvestmentStatus(product, investAmount);
 
         Investment investment = Investment.builder()
                 .userId(userId)
@@ -64,10 +64,10 @@ public class InvestmentService {
         return of(updateInvestment);
     }
 
-    private boolean isValidInvestment(Product product, Long investAmount) {
+    private InvestmentStatus checkInvestmentStatus(Product product, Long investAmount) {
         Long goalAmount = product.getTotalInvestingAmount();
         Long totalInvested = investmentRepository.sumInvestedAmount(product);
-        return investAmount <= (goalAmount - totalInvested);
+        return investAmount <= (goalAmount - totalInvested) ? INVESTED : FAIL;
     }
 
 }
