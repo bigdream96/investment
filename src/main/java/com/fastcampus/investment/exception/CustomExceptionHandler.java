@@ -1,6 +1,5 @@
 package com.fastcampus.investment.exception;
 
-import com.fastcampus.investment.constants.ErrorCode;
 import com.fastcampus.investment.dto.Message;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -15,7 +14,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.validation.ConstraintViolationException;
 
-import static com.fastcampus.investment.constants.ErrorCode.*;
 import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.*;
 
@@ -30,18 +28,10 @@ public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(value = InvestmentException.class)
-    protected ResponseEntity<Message<String>> handleAPIException(InvestmentException e) {
-        HttpStatus httpStatus;
-        ErrorCode errorCode = e.getErrorCode();
-
-        if (errorCode == NO_INVESTMENT_DATA || errorCode == NO_PRODUCT_DATA)
-            httpStatus = NOT_FOUND;
-        else
-            httpStatus = BAD_REQUEST;
-
-        Message<String> message = Message.error(e.getMessage());
-        log.warn(format("[ 예외발생 ] %s, data=%s,", e.getMessage(), e.getData()));
-        return new ResponseEntity<>(message, httpStatus);
+    protected ResponseEntity<Message<String>> handleInvestmentException(InvestmentException e) {
+        Message<String> message = Message.error(e.getErrorCode().getMessage());
+        log.warn(format("[ 예외발생 ] %s, data=%s,", message.getDescription(), e.getData()));
+        return new ResponseEntity<>(message, BAD_REQUEST);
     }
 
     @ExceptionHandler(value = MissingRequestHeaderException.class)
