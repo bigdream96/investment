@@ -12,7 +12,6 @@ import java.time.LocalDate;
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode
 public class ProductResponse {
     private Long id;
 
