@@ -29,7 +29,7 @@ public class InvestmentService {
 
     public List<InvestmentResponse> searchInvestment(Long userId) {
         List<Investment> investments = investmentRepository.findByUserIdOrderByInvestedAtDesc(userId);
-        return entityToResponse(investments);
+        return of(investments);
     }
 
     public InvestmentResponse invest(Long userId, Long productId, Long investAmount) throws InvestmentException {
@@ -48,7 +48,7 @@ public class InvestmentService {
                 .build();
         Investment saveInvestment = investmentRepository.save(investment);
 
-        return entityToResponse(saveInvestment);
+        return of(saveInvestment);
     }
 
     public InvestmentResponse updateInvestment(Long userId, Long investmentId, InvestmentStatus status) throws InvestmentException {
@@ -62,7 +62,7 @@ public class InvestmentService {
         investment.changeStatus(status);
         Investment updateInvestment = investmentRepository.save(investment);
 
-        return entityToResponse(updateInvestment);
+        return of(updateInvestment);
     }
 
     private boolean isValidInvestment(Product product, Long investAmount) {

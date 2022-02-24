@@ -32,21 +32,21 @@ public class InvestmentResponse {
     @JsonProperty("product")
     private ProductResponse productResponse;
 
-    public static InvestmentResponse entityToResponse(Investment investment) {
+    public static InvestmentResponse of(Investment investment) {
         return InvestmentResponse.builder()
                 .id(investment.getId())
                 .userId(investment.getUserId())
                 .status(investment.getStatus())
                 .investedAt(investment.getInvestedAt())
                 .investedAmount(investment.getInvestedAmount())
-                .productResponse(ProductResponse.entityToResponse(investment.getProduct()))
+                .productResponse(ProductResponse.of(investment.getProduct()))
                 .build();
     }
 
-    public static List<InvestmentResponse> entityToResponse(List<Investment> investments) {
+    public static List<InvestmentResponse> of(List<Investment> investments) {
         List<InvestmentResponse> investmentResponses = new ArrayList<>();
         for (Investment investment : investments) {
-            InvestmentResponse investmentResponse = entityToResponse(investment);
+            InvestmentResponse investmentResponse = of(investment);
             investmentResponses.add(investmentResponse);
         }
         return investmentResponses;

@@ -30,7 +30,7 @@ public class ProductResponse {
 
     private Integer investedCount;
 
-    public static ProductResponse entityToResponse(Product product) {
+    public static ProductResponse of(Product product) {
         return ProductResponse.builder()
                 .id(product.getId())
                 .title(product.getTitle())

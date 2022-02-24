@@ -24,7 +24,7 @@ public class ProductService {
 
         List<ProductResponse> result = new ArrayList<>();
         for (Product product : products) {
-            ProductResponse productResponse = ProductResponse.entityToResponse(product);
+            ProductResponse productResponse = ProductResponse.of(product);
             productResponse.setInvestedAmount(sumInvestedAmount(product));
             productResponse.setInvestedCount(cntInvested(product));
             result.add(productResponse);
