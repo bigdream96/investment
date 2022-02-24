@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @ToString
 public class Investment {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(nullable = false)
