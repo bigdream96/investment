@@ -1,6 +1,6 @@
 package com.fastcampus.investment.exception;
 
-import com.fastcampus.investment.dto.ErrorMessage;
+import com.fastcampus.investment.dto.message.ErrorMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;

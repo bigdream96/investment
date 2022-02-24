@@ -1,4 +1,4 @@
-package com.fastcampus.investment.dto;
+package com.fastcampus.investment.dto.message;
 
 import lombok.*;
 

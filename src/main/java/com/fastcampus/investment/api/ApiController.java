@@ -2,7 +2,7 @@ package com.fastcampus.investment.api;
 
 import com.fastcampus.investment.constants.InvestmentStatus;
 import com.fastcampus.investment.dto.response.InvestmentResponse;
-import com.fastcampus.investment.dto.APIMessage;
+import com.fastcampus.investment.dto.message.APIMessage;
 import com.fastcampus.investment.dto.response.ProductResponse;
 import com.fastcampus.investment.service.InvestmentService;
 import com.fastcampus.investment.service.ProductService;
