@@ -81,5 +81,6 @@
 
 ## 5. 테스트
 - 통합테스트 및 단위테스트 작성
-- 테스트 커버리지 100% 달성
-  ![test_results](https://user-images.githubusercontent.com/35022991/155540214-47167e55-615d-4fa1-9d1e-ebadde827b67.png)
+- 테스트 커버리지 100% 달성  
+
+![test_results](https://user-images.githubusercontent.com/35022991/155540214-47167e55-615d-4fa1-9d1e-ebadde827b67.png)
