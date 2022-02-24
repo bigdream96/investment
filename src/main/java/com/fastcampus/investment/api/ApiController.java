@@ -55,6 +55,6 @@ public class ApiController {
     }
 
     private static <T> ResponseEntity<Message<T>> toResponse(T data) {
-        return new ResponseEntity<>(Message.OK(data), OK);
+        return new ResponseEntity<>(Message.ok(data), OK);
     }
 }

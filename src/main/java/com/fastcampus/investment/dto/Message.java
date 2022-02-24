@@ -22,7 +22,7 @@ public class Message<T> {
     private T data;
 
     // DATA OK
-    public static <T> Message<T> OK(T data) {
+    public static <T> Message<T> ok(T data) {
         return (Message<T>)Message.builder()
                 .isSuccess(true)
                 .description("Success!!!")
@@ -31,19 +31,10 @@ public class Message<T> {
     }
 
     // ERROR
-    public static <T> Message<T> ERROR(String description) {
+    public static <T> Message<T> error(String description) {
         return (Message<T>)Message.builder()
                 .isSuccess(false)
                 .description(description)
-                .build();
-    }
-
-    // ERROR
-    public static <T> Message<T> ERROR(String description, String data) {
-        return (Message<T>)Message.builder()
-                .isSuccess(false)
-                .description(description)
-                .data(data)
                 .build();
     }
 }
