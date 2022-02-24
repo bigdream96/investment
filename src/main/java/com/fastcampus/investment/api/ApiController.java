@@ -27,34 +27,30 @@ public class ApiController {
     private final InvestmentService investmentService;
 
     @GetMapping("product")
-    public ResponseEntity<Message<List<ProductResponse>>> searchInvestmentProductList() {
+    public Message<List<ProductResponse>> searchInvestmentProductList() {
         List<ProductResponse> productResponses = productService.searchInvestmentProductList();
-        return toResponse(productResponses);
+        return Message.ok(productResponses);
     }
 
     @GetMapping("investment")
-    public ResponseEntity<Message<List<InvestmentResponse>>> searchInvestment(@RequestHeader(value = USER_ID) @NotNull @Positive Long userId) {
+    public Message<List<InvestmentResponse>> searchInvestment(@RequestHeader(value = USER_ID) @NotNull @Positive Long userId) {
         List<InvestmentResponse> investmentResponses = investmentService.searchInvestment(userId);
-        return toResponse(investmentResponses);
+        return Message.ok(investmentResponses);
     }
 
     @PostMapping("investment")
-    public ResponseEntity<Message<InvestmentResponse>> invest(@RequestHeader(value = USER_ID) @NotNull @Positive Long userId,
+    public Message<InvestmentResponse> invest(@RequestHeader(value = USER_ID) @NotNull @Positive Long userId,
                                                               @RequestParam @NotNull @Positive Long productId,
                                                               @RequestParam @PositiveOrZero Long investAmount) {
         InvestmentResponse investmentResponse = investmentService.invest(userId, productId, investAmount);
-        return toResponse(investmentResponse);
+        return Message.ok(investmentResponse);
     }
 
     @PutMapping("investment/{investmentId}")
-    public ResponseEntity<Message<InvestmentResponse>> updateInvestment(@RequestHeader(value = USER_ID) @NotNull @Positive Long userId,
+    public Message<InvestmentResponse> updateInvestment(@RequestHeader(value = USER_ID) @NotNull @Positive Long userId,
                                                                         @PathVariable("investmentId") @NotNull @Positive Long investmentId,
                                                                         @RequestParam @NotNull InvestmentStatus status) {
         InvestmentResponse investmentResponse = investmentService.updateInvestment(userId, investmentId, status);
-        return toResponse(investmentResponse);
-    }
-
-    private static <T> ResponseEntity<Message<T>> toResponse(T data) {
-        return new ResponseEntity<>(Message.ok(data), OK);
+        return Message.ok(investmentResponse);
     }
 }

@@ -9,8 +9,6 @@ import java.time.LocalDate;
 @Builder
 @Getter
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 public class ProductResponse {
     private Long id;
     private String title;

@@ -13,8 +13,6 @@ import java.util.List;
 @Builder
 @Getter
 @ToString
-@NoArgsConstructor
-@AllArgsConstructor
 public class InvestmentResponse {
     private Long id;
     private Long userId;
