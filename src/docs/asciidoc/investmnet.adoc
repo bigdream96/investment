@@ -1,0 +1,46 @@
+= 투자서비스 API
+:toc: left
+:toclevels: 2
+:source-highlighter: highlightjs
+
+== 1. 투자리스트 조회
+=== 1-1. Request
+include::{snippets}/product-all-list-example/http-request.adoc[]
+=== 1-2. Response
+include::{snippets}/product-all-list-example/http-response.adoc[]
+
+== 2. 투자성공
+=== 2-1. Request
+include::{snippets}/investment-success-example/http-request.adoc[]
+=== 2-2. Response
+include::{snippets}/investment-success-example/http-response.adoc[]
+
+== 3. 투자성공 조회
+=== 3-1. Request
+include::{snippets}/investment-success-get-example/http-request.adoc[]
+=== 3-2. Response
+include::{snippets}/investment-success-get-example/http-response.adoc[]
+
+== 4. 투자실패
+=== 4-1. Request
+include::{snippets}/investment-fail-example/http-request.adoc[]
+=== 4-2. Response
+include::{snippets}/investment-fail-example/http-response.adoc[]
+
+== 5. 투자실패 조회
+=== 5-1. Request
+include::{snippets}/investment-fail-get-example/http-request.adoc[]
+=== 5-2. Response
+include::{snippets}/investment-fail-get-example/http-response.adoc[]
+
+== 6. 투자취소
+=== 6-1. Request
+include::{snippets}/investment-cancel-example/http-request.adoc[]
+=== 6-2. Response
+include::{snippets}/investment-cancel-example/http-response.adoc[]
+
+== 7. 투자취소 조회
+=== 7-1. Request
+include::{snippets}/investment-cancel-get-example/http-request.adoc[]
+=== 7-2. Response
+include::{snippets}/investment-cancel-get-example/http-response.adoc[]

@@ -2,6 +2,7 @@ package com.fastcampus.investment.api;
 
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.restdocs.AutoConfigureRestDocs;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
@@ -11,6 +12,9 @@ import org.springframework.test.web.servlet.ResultActions;
 import java.time.LocalDate;
 
 import static org.hamcrest.Matchers.is;
+import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -18,6 +22,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @SpringBootTest
 @AutoConfigureMockMvc
+@AutoConfigureRestDocs
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.MethodName.class)
 @DisplayName("채점용 테스트")
@@ -55,6 +60,9 @@ class ApisTest {
                 .andExpect(jsonPath("$.data[1].investedAmount", is(0)))
                 .andExpect(jsonPath("$.data[1].startedAt", is(LocalDate.now().minusDays(2L).toString())))
                 .andExpect(jsonPath("$.data[1].finishedAt", is(LocalDate.now().plusDays(2L).toString())))
+                .andDo(document("product-all-list-example",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
         ;
     }
 
@@ -71,6 +79,9 @@ class ApisTest {
 
         result.andDo(print())
                 .andExpect(status().isOk())
+                .andDo(document("investment-success-example",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
         ;
 
         ResultActions after = mockMvc.perform(
@@ -91,6 +102,9 @@ class ApisTest {
                 .andExpect(jsonPath("$.data[0].investedAmount", is(10000)))
                 .andExpect(jsonPath("$.data[0].status", is("INVESTED")))
                 .andExpect(jsonPath("$.data[0].investedAt").exists())
+                .andDo(document("investment-success-get-example",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
         ;
     }
 
@@ -108,6 +122,9 @@ class ApisTest {
         result.andDo(print())
                 .andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("$.data.status", is("FAIL")))
+                .andDo(document("investment-fail-example",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
         ;
 
         ResultActions after = mockMvc.perform(
@@ -127,6 +144,9 @@ class ApisTest {
                 .andExpect(jsonPath("$.data[0].investedAmount", is(100000000000L)))
                 .andExpect(jsonPath("$.data[0].status", is("FAIL")))
                 .andExpect(jsonPath("$.data[0].investedAt").exists())
+                .andDo(document("investment-fail-get-example",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
         ;
     }
 
@@ -142,6 +162,9 @@ class ApisTest {
 
         result.andDo(print())
                 .andExpect(status().is2xxSuccessful())
+                .andDo(document("investment-cancel-example",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
         ;
 
         ResultActions after = mockMvc.perform(
@@ -162,6 +185,9 @@ class ApisTest {
                 .andExpect(jsonPath("$.data[0].investedAmount", is(10000)))
                 .andExpect(jsonPath("$.data[0].status", is("CANCELED")))
                 .andExpect(jsonPath("$.data[0].investedAt").exists())
+                .andDo(document("investment-cancel-get-example",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())))
         ;
     }
 }
