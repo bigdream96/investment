@@ -68,11 +68,11 @@
 - 테스트 : Junit
 
 ## 2. 아키텍처
-- 계층형 아키텍처 사용
+- 계층형 아키텍처 사용  
   <img width="750" alt="architecture" src="https://user-images.githubusercontent.com/35022991/155467478-95cae9e7-fa33-4aab-b275-7e18d2a3b484.png">
 
 ## 3. 예외처리
-- @ControllerAdvice 사용
+- @ControllerAdvice 사용  
   <img width="600" alt="exception_handling" src="https://user-images.githubusercontent.com/35022991/155537760-49d7862f-b490-44c5-a555-60b751f3d78a.png">
 
 ## 4. API
@@ -81,5 +81,6 @@
 
 ## 5. 테스트
 - 통합테스트 및 단위테스트 작성
-- 테스트 커버리지 100% 달성
-  ![test_results](https://user-images.githubusercontent.com/35022991/155540214-47167e55-615d-4fa1-9d1e-ebadde827b67.png)
+- 테스트 커버리지 100% 달성  
+
+![test_results](https://user-images.githubusercontent.com/35022991/155540214-47167e55-615d-4fa1-9d1e-ebadde827b67.png)
