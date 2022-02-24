@@ -1,6 +1,6 @@
 package com.fastcampus.investment.exception;
 
-import com.fastcampus.investment.dto.Message;
+import com.fastcampus.investment.dto.ErrorMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -14,6 +14,8 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import javax.validation.ConstraintViolationException;
 
+import static com.fastcampus.investment.constants.ErrorCode.API_SERVER_ERROR;
+import static com.fastcampus.investment.constants.ErrorCode.BAD_API_REQUEST;
 import static java.lang.String.format;
 import static org.springframework.http.HttpStatus.*;
 
@@ -22,36 +24,37 @@ import static org.springframework.http.HttpStatus.*;
 public class CustomExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = Exception.class)
-    protected ResponseEntity<Message<String>> handleException(Exception e) {
+    protected ResponseEntity<ErrorMessage<String>> handleException(Exception e) {
         log.warn(format("[ 예외발생 ] %s", e.getMessage()));
-        return new ResponseEntity<>(Message.error(e.getMessage()), INTERNAL_SERVER_ERROR);
+        ErrorMessage<String> errorMessage = ErrorMessage.error(API_SERVER_ERROR.getMessage());
+        return new ResponseEntity<>(errorMessage, BAD_REQUEST);
     }
 
     @ExceptionHandler(value = InvestmentException.class)
-    protected ResponseEntity<Message<String>> handleInvestmentException(InvestmentException e) {
-        Message<String> message = Message.error(e.getErrorCode().getMessage());
-        log.warn(format("[ 예외발생 ] %s, data=%s,", message.getDescription(), e.getData()));
-        return new ResponseEntity<>(message, BAD_REQUEST);
+    protected ResponseEntity<ErrorMessage<String>> handleAuthException(InvestmentException e) {
+        log.warn(format("[ 예외발생 ] %s", e.getErrorCode().getMessage()));
+        ErrorMessage<String> errorMessage = ErrorMessage.error(e.getErrorCode().getMessage());
+        return new ResponseEntity<>(errorMessage, BAD_REQUEST);
     }
 
     @ExceptionHandler(value = MissingRequestHeaderException.class)
-    protected ResponseEntity<Message<String>> handleMissingRequestHeaderException(MissingRequestHeaderException e) {
+    protected ResponseEntity<ErrorMessage<String>> handleMissingRequestHeaderException(MissingRequestHeaderException e) {
         log.warn(format("[ 예외발생 ] %s", e.getMessage()));
-        Message<String> message = Message.error("요청 헤더 값이 누락되거나 바인딩할 수 없습니다.");
-        return new ResponseEntity<>(message, BAD_REQUEST);
+        ErrorMessage<String> errorMessage = ErrorMessage.error(BAD_API_REQUEST.getMessage());
+        return new ResponseEntity<>(errorMessage, BAD_REQUEST);
     }
 
     @ExceptionHandler(value = ConstraintViolationException.class)
-    protected ResponseEntity<Message<String>> handleConstraintViolationException(ConstraintViolationException e) {
+    protected ResponseEntity<ErrorMessage<String>> handleConstraintViolationException(ConstraintViolationException e) {
         log.warn(format("[ 예외발생 ] %s", e.getMessage()));
-        Message<String> message = Message.error("유효하지 않은 값입니다.");
-        return new ResponseEntity<>(message, BAD_REQUEST);
+        ErrorMessage<String> errorMessage = ErrorMessage.error(BAD_API_REQUEST.getMessage());
+        return new ResponseEntity<>(errorMessage, BAD_REQUEST);
     }
 
     @Override
     protected ResponseEntity<Object> handleMissingServletRequestParameter(MissingServletRequestParameterException e, HttpHeaders headers, HttpStatus status, WebRequest request) {
         log.warn(format("[ 예외발생 ] %s", e.getMessage()));
-        Message<String> message = Message.error("요청 파라미터 값이 누락되거나 잘못된 값입니다.");
-        return new ResponseEntity<>(message, status);
+        ErrorMessage<String> errorMessage = ErrorMessage.error(BAD_API_REQUEST.getMessage());
+        return new ResponseEntity<>(errorMessage, BAD_REQUEST);
     }
 }
