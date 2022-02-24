@@ -481,7 +481,7 @@ body.book #toc,body.book #preamble,body.book h1.sect0,body.book .sect1>h2{page-b
 <li><a href="#_6_2_response">6-2. Response</a></li>
 </ul>
 </li>
-<li><a href="#_7_투자실패_조회">7. 투자실패 조회</a>
+<li><a href="#_7_투자취소_조회">7. 투자취소 조회</a>
 <ul class="sectlevel2">
 <li><a href="#_7_1_request">7-1. Request</a></li>
 <li><a href="#_7_2_response">7-2. Response</a></li>
@@ -571,7 +571,7 @@ Content-Length: 453
     "userId" : 1,
     "investedAmount" : 10000,
     "status" : "INVESTED",
-    "investedAt" : "2022-02-24 16:16:15",
+    "investedAt" : "2022-02-24 18:11:34",
     "product" : {
       "id" : 1,
       "title" : "You can be elon musk",
@@ -618,7 +618,7 @@ Content-Length: 457
     "userId" : 1,
     "investedAmount" : 10000,
     "status" : "INVESTED",
-    "investedAt" : "2022-02-24 16:16:15",
+    "investedAt" : "2022-02-24 18:11:34",
     "product" : {
       "id" : 1,
       "title" : "You can be elon musk",
@@ -642,53 +642,6 @@ Content-Length: 457
 <h3 id="_4_1_request">4-1. Request</h3>
 <div class="listingblock">
 <div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/investment HTTP/1.1
-Accept: application/json
-X-USER-ID: 2
-Host: localhost:8080</code></pre>
-</div>
-</div>
-</div>
-<div class="sect2">
-<h3 id="_4_2_response">4-2. Response</h3>
-<div class="listingblock">
-<div class="content">
-<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
-Content-Type: application/json
-Content-Length: 460
-
-{
-  "isSuccess" : true,
-  "description" : "Success!!!",
-  "data" : [ {
-    "id" : 2,
-    "userId" : 2,
-    "investedAmount" : 100000000000,
-    "status" : "FAIL",
-    "investedAt" : "2022-02-24 16:16:15",
-    "product" : {
-      "id" : 1,
-      "title" : "You can be elon musk",
-      "totalInvestAmount" : 100000000,
-      "startedAt" : "2022-02-23",
-      "finishedAt" : "2022-02-25",
-      "investedAmount" : null,
-      "investedCount" : null
-    }
-  } ]
-}</code></pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<div class="sect1">
-<h2 id="_5_투자실패_조회">5. 투자실패 조회</h2>
-<div class="sectionbody">
-<div class="sect2">
-<h3 id="_5_1_request">5-1. Request</h3>
-<div class="listingblock">
-<div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">POST /api/investment HTTP/1.1
 Accept: application/json
 X-USER-ID: 2
@@ -700,7 +653,7 @@ productId=1&amp;investAmount=100000000000</code></pre>
 </div>
 </div>
 <div class="sect2">
-<h3 id="_5_2_response">5-2. Response</h3>
+<h3 id="_4_2_response">4-2. Response</h3>
 <div class="listingblock">
 <div class="content">
 <pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
@@ -715,7 +668,7 @@ Content-Length: 456
     "userId" : 2,
     "investedAmount" : 100000000000,
     "status" : "FAIL",
-    "investedAt" : "2022-02-24 16:16:15",
+    "investedAt" : "2022-02-24 18:11:34",
     "product" : {
       "id" : 1,
       "title" : "You can be elon musk",
@@ -726,6 +679,53 @@ Content-Length: 456
       "investedCount" : null
     }
   }
+}</code></pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div class="sect1">
+<h2 id="_5_투자실패_조회">5. 투자실패 조회</h2>
+<div class="sectionbody">
+<div class="sect2">
+<h3 id="_5_1_request">5-1. Request</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">GET /api/investment HTTP/1.1
+Accept: application/json
+X-USER-ID: 2
+Host: localhost:8080</code></pre>
+</div>
+</div>
+</div>
+<div class="sect2">
+<h3 id="_5_2_response">5-2. Response</h3>
+<div class="listingblock">
+<div class="content">
+<pre class="highlightjs highlight nowrap"><code data-lang="http" class="language-http hljs">HTTP/1.1 200 OK
+Content-Type: application/json
+Content-Length: 460
+
+{
+  "isSuccess" : true,
+  "description" : "Success!!!",
+  "data" : [ {
+    "id" : 2,
+    "userId" : 2,
+    "investedAmount" : 100000000000,
+    "status" : "FAIL",
+    "investedAt" : "2022-02-24 18:11:34",
+    "product" : {
+      "id" : 1,
+      "title" : "You can be elon musk",
+      "totalInvestAmount" : 100000000,
+      "startedAt" : "2022-02-23",
+      "finishedAt" : "2022-02-25",
+      "investedAmount" : null,
+      "investedCount" : null
+    }
+  } ]
 }</code></pre>
 </div>
 </div>
@@ -765,7 +765,7 @@ Content-Length: 453
     "userId" : 1,
     "investedAmount" : 10000,
     "status" : "CANCELED",
-    "investedAt" : "2022-02-24 16:16:15",
+    "investedAt" : "2022-02-24 18:11:34",
     "product" : {
       "id" : 1,
       "title" : "You can be elon musk",
@@ -783,7 +783,7 @@ Content-Length: 453
 </div>
 </div>
 <div class="sect1">
-<h2 id="_7_투자실패_조회">7. 투자실패 조회</h2>
+<h2 id="_7_투자취소_조회">7. 투자취소 조회</h2>
 <div class="sectionbody">
 <div class="sect2">
 <h3 id="_7_1_request">7-1. Request</h3>
@@ -812,7 +812,7 @@ Content-Length: 457
     "userId" : 1,
     "investedAmount" : 10000,
     "status" : "CANCELED",
-    "investedAt" : "2022-02-24 16:16:15",
+    "investedAt" : "2022-02-24 18:11:34",
     "product" : {
       "id" : 1,
       "title" : "You can be elon musk",
@@ -833,7 +833,7 @@ Content-Length: 457
 <div id="footer">
 <div id="footer-text">
 Version 0.0.1-SNAPSHOT<br>
-Last updated 2022-02-24 16:17:23 +0900
+Last updated 2022-02-24 16:24:09 +0900
 </div>
 </div>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.15.6/styles/github.min.css">
