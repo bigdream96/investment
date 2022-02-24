@@ -15,7 +15,6 @@ import static com.fastcampus.investment.constants.InvestmentStatus.*;
 @Service
 @RequiredArgsConstructor
 public class ProductService {
-
     private final ProductRepository productRepository;
     private final InvestmentRepository investmentRepository;
 
@@ -25,8 +24,7 @@ public class ProductService {
         List<ProductResponse> result = new ArrayList<>();
         for (Product product : products) {
             ProductResponse productResponse = ProductResponse.of(product);
-            productResponse.setInvestedAmount(sumInvestedAmount(product));
-            productResponse.setInvestedCount(cntInvested(product));
+            productResponse.setTotalStatistics(sumInvestedAmount(product), cntInvested(product));
             result.add(productResponse);
         }
 

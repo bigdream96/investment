@@ -16,18 +16,12 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 public class InvestmentResponse {
-
     private Long id;
-
     private Long userId;
-
     private Long investedAmount;
-
     private InvestmentStatus status;
-
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime investedAt;
-
     @JsonProperty("product")
     private ProductResponse productResponse;
 

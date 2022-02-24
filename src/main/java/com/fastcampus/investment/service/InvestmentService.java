@@ -23,7 +23,6 @@ import static java.lang.String.*;
 @Service
 @RequiredArgsConstructor
 public class InvestmentService {
-
     private final ProductRepository productRepository;
     private final InvestmentRepository investmentRepository;
 

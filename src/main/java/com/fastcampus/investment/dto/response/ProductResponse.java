@@ -8,25 +8,18 @@ import java.time.LocalDate;
 
 @Builder
 @Getter
-@Setter
 @ToString
 @NoArgsConstructor
 @AllArgsConstructor
 public class ProductResponse {
     private Long id;
-
     private String title;
-
     private Long totalInvestAmount;
-
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate startedAt;
-
     @JsonFormat(pattern = "yyyy-MM-dd")
     private LocalDate finishedAt;
-
     private Long investedAmount;
-
     private Integer investedCount;
 
     public static ProductResponse of(Product product) {
@@ -37,5 +30,10 @@ public class ProductResponse {
                 .startedAt(product.getStartedAt())
                 .finishedAt(product.getFinishedAt())
                 .build();
+    }
+
+    public void setTotalStatistics(Long investedAmount, Integer investedCount) {
+        this.investedAmount = investedAmount;
+        this.investedCount = investedCount;
     }
 }
