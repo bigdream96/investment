@@ -20,7 +20,7 @@ import static org.springframework.http.HttpStatus.*;
 @RequestMapping("api")
 @Validated
 @RequiredArgsConstructor
-public class Apis {
+public class ApiController {
     private static final String USER_ID = "X-USER-ID";
 
     private final ProductService productService;

@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @TestMethodOrder(MethodOrderer.MethodName.class)
 @DisplayName("채점용 테스트")
-class ApisTest {
+class ApiControllerTest {
     private MockMvc mockMvc;
 
     @Autowired
