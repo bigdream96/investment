@@ -75,12 +75,8 @@
 - @ControllerAdvice 사용  
   <img width="600" alt="exception_handling" src="https://user-images.githubusercontent.com/35022991/155537760-49d7862f-b490-44c5-a555-60b751f3d78a.png">
 
-## 4. API
-아래 링크를 클릭하시면 Spring REST Docs로 생성한 API문서를 볼 수 있습니다.  
-[투자서비스 API 문서](https://drive.google.com/file/d/1v27maY2fDGxrSKX0v1g7F4jFPKFLe-3z/view?usp=sharing)
-
-## 5. 테스트
+## 4. 테스트
 - 통합테스트 및 단위테스트 작성
-- 테스트 커버리지 100% 달성  
+- 테스트 커버리지 100% 확인
 
 ![test_results](https://user-images.githubusercontent.com/35022991/155540214-47167e55-615d-4fa1-9d1e-ebadde827b67.png)
