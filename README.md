@@ -77,7 +77,7 @@
 
 ## 4. API
 아래 링크를 클릭하시면 Spring REST Docs로 생성한 API문서를 볼 수 있습니다.  
-[투자서비스 API 문서](https://drive.google.com/file/d/1v27maY2fDGxrSKX0v1g7F4jFPKFLe-3z/view?usp=sharing)
+[투자서비스 API 문서](src/main/resources/static/docs/investmnet.html)
 
 ## 5. 테스트
 - 통합테스트 및 단위테스트 작성
