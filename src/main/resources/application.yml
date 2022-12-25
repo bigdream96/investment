@@ -27,7 +27,7 @@ spring:
         show_sql: true
         format_sql: true
 server:
-  port: 8080
+  port: 80
 logging:
   level:
     com.fastcampus.investment.aop.LoggingAdvice: DEBUG
